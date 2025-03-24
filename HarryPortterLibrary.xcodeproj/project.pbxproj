@@ -6,30 +6,27 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		14AB45B42D912FCC00AEF07C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14AB45A92D912FCC00AEF07C /* AppDelegate.swift */; };
+		14AB45B52D912FCC00AEF07C /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14AB45B12D912FCC00AEF07C /* SceneDelegate.swift */; };
+		14AB45B62D912FCC00AEF07C /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14AB45B22D912FCC00AEF07C /* ViewController.swift */; };
+		14AB45B72D912FCC00AEF07C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 14AB45AA2D912FCC00AEF07C /* Assets.xcassets */; };
+		14AB45B82D912FCC00AEF07C /* data.json in Resources */ = {isa = PBXBuildFile; fileRef = 14AB45AB2D912FCC00AEF07C /* data.json */; };
+		14AB45BA2D912FCC00AEF07C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 14AB45AE2D912FCC00AEF07C /* LaunchScreen.storyboard */; };
+		14AB45BB2D912FCC00AEF07C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 14AB45B02D912FCC00AEF07C /* Main.storyboard */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		14AB456D2D912AD000AEF07C /* HarryPortterLibrary.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HarryPortterLibrary.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		14AB45A92D912FCC00AEF07C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		14AB45AA2D912FCC00AEF07C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		14AB45AB2D912FCC00AEF07C /* data.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = data.json; sourceTree = "<group>"; };
+		14AB45AC2D912FCC00AEF07C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		14AB45AD2D912FCC00AEF07C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		14AB45AF2D912FCC00AEF07C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		14AB45B12D912FCC00AEF07C /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
+		14AB45B22D912FCC00AEF07C /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
-
-/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		14AB457F2D912AD100AEF07C /* Exceptions for "HarryPortterLibrary" folder in "HarryPortterLibrary" target */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				Info.plist,
-			);
-			target = 14AB456C2D912AD000AEF07C /* HarryPortterLibrary */;
-		};
-/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
-
-/* Begin PBXFileSystemSynchronizedRootGroup section */
-		14AB456F2D912AD000AEF07C /* HarryPortterLibrary */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-				14AB457F2D912AD100AEF07C /* Exceptions for "HarryPortterLibrary" folder in "HarryPortterLibrary" target */,
-			);
-			path = HarryPortterLibrary;
-			sourceTree = "<group>";
-		};
-/* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		14AB456A2D912AD000AEF07C /* Frameworks */ = {
@@ -45,7 +42,7 @@
 		14AB45642D912AD000AEF07C = {
 			isa = PBXGroup;
 			children = (
-				14AB456F2D912AD000AEF07C /* HarryPortterLibrary */,
+				14AB45B32D912FCC00AEF07C /* HarryPortterLibrary */,
 				14AB456E2D912AD000AEF07C /* Products */,
 			);
 			sourceTree = "<group>";
@@ -56,6 +53,21 @@
 				14AB456D2D912AD000AEF07C /* HarryPortterLibrary.app */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		14AB45B32D912FCC00AEF07C /* HarryPortterLibrary */ = {
+			isa = PBXGroup;
+			children = (
+				14AB45A92D912FCC00AEF07C /* AppDelegate.swift */,
+				14AB45B12D912FCC00AEF07C /* SceneDelegate.swift */,
+				14AB45B22D912FCC00AEF07C /* ViewController.swift */,
+				14AB45AA2D912FCC00AEF07C /* Assets.xcassets */,
+				14AB45AB2D912FCC00AEF07C /* data.json */,
+				14AB45AC2D912FCC00AEF07C /* Info.plist */,
+				14AB45AE2D912FCC00AEF07C /* LaunchScreen.storyboard */,
+				14AB45B02D912FCC00AEF07C /* Main.storyboard */,
+			);
+			path = HarryPortterLibrary;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -72,9 +84,6 @@
 			buildRules = (
 			);
 			dependencies = (
-			);
-			fileSystemSynchronizedGroups = (
-				14AB456F2D912AD000AEF07C /* HarryPortterLibrary */,
 			);
 			name = HarryPortterLibrary;
 			packageProductDependencies = (
@@ -122,6 +131,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				14AB45B72D912FCC00AEF07C /* Assets.xcassets in Resources */,
+				14AB45B82D912FCC00AEF07C /* data.json in Resources */,
+				14AB45BA2D912FCC00AEF07C /* LaunchScreen.storyboard in Resources */,
+				14AB45BB2D912FCC00AEF07C /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -132,10 +145,32 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				14AB45B42D912FCC00AEF07C /* AppDelegate.swift in Sources */,
+				14AB45B52D912FCC00AEF07C /* SceneDelegate.swift in Sources */,
+				14AB45B62D912FCC00AEF07C /* ViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		14AB45AE2D912FCC00AEF07C /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				14AB45AD2D912FCC00AEF07C /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+		14AB45B02D912FCC00AEF07C /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				14AB45AF2D912FCC00AEF07C /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		14AB45812D912AD100AEF07C /* Debug */ = {
@@ -153,6 +188,7 @@
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -181,6 +217,7 @@
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
