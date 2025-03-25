@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum DataError: Error {
-    case fileNotFound
-    case parsingFailed
+enum DataError: String, Error {
+    case fileNotFound = "파일을 찾을 수 없습니다."
+    case parsingFailed = "JSON 파싱에 실패하였습니다."
 }

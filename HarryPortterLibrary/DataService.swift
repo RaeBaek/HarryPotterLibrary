@@ -8,7 +8,7 @@
 import Foundation
 
 class DataService {
-    func loadBooks(completion: @escaping (Result<[Book], Error>) -> Void) {
+    func loadBooks(completion: @escaping (Result<[Book], DataError>) -> Void) {
         guard let path = Bundle.main.path(forResource: "data", ofType: "json") else {
             completion(.failure(DataError.fileNotFound))
             return
