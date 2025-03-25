@@ -136,7 +136,55 @@ class ViewController: UIViewController {
         view.textColor = .gray
         return view
     }()
-
+    
+    // 헌정사 VStackView
+    let dedicationVStackView = {
+        let view = UIStackView()
+        view.axis = .vertical
+        view.spacing = 8
+        view.alignment = .leading
+        return view
+    }()
+    
+    let dedicationLabel = {
+        let view = UILabel()
+        view.font = .systemFont(ofSize: 18, weight: .bold)
+        view.textColor = .black
+        return view
+    }()
+    
+    let dedicationContentLabel = {
+        let view = UILabel()
+        view.font = .systemFont(ofSize: 14, weight: .regular)
+        view.textColor = .darkGray
+        view.numberOfLines = 0
+        return view
+    }()
+    
+    // 요약 VStackView
+    let summaryVStackView = {
+        let view = UIStackView()
+        view.axis = .vertical
+        view.spacing = 8
+        view.alignment = .leading
+        return view
+    }()
+    
+    let summaryLabel = {
+        let view = UILabel()
+        view.font = .systemFont(ofSize: 18, weight: .bold)
+        view.textColor = .black
+        return view
+    }()
+    
+    let summaryContentLabel = {
+        let view = UILabel()
+        view.font = .systemFont(ofSize: 14, weight: .regular)
+        view.textColor = .darkGray
+        view.numberOfLines = 0
+        return view
+    }()
+    
     let dataService = DataService()
     var harryPoterLibrary: [Book] = []
     
@@ -169,12 +217,21 @@ class ViewController: UIViewController {
         titleLabel.text = harryPoterLibrary[0].title
         coverImage.image = UIImage(named: "harrypotter1")
         bookTitleLabel.text = harryPoterLibrary[0].title
+        
         authorLabel.text = "Author"
         authoreNameLabel.text = harryPoterLibrary[0].author
+        
         releasedLabel.text = "Released"
         releasedDateLabel.text = harryPoterLibrary[0].releaseDate
+        
         pageLabel.text = "Page"
         pageNumberLabel.text = "\(harryPoterLibrary[0].pages)"
+        
+        dedicationLabel.text = "Dedication"
+        dedicationContentLabel.text = harryPoterLibrary[0].dedication
+        
+        summaryLabel.text = "Summary"
+        summaryContentLabel.text = harryPoterLibrary[0].summary
     }
     
     private func showAlert(_ title: String) {
@@ -191,7 +248,7 @@ class ViewController: UIViewController {
     private func configureView() {
         view.backgroundColor = .systemBackground
         
-        [titleLabel, seriesButton, topHStackView].forEach {
+        [titleLabel, seriesButton, topHStackView, dedicationVStackView, summaryVStackView].forEach {
             view.addSubview($0)
         }
         
@@ -215,6 +272,14 @@ class ViewController: UIViewController {
             topHStackView.addArrangedSubview($0)
         }
         
+        [dedicationLabel, dedicationContentLabel].forEach {
+            dedicationVStackView.addArrangedSubview($0)
+        }
+        
+        [summaryLabel, summaryContentLabel].forEach {
+            summaryVStackView.addArrangedSubview($0)
+        }
+        
     }
     
     private func setConstraints() {
@@ -232,15 +297,28 @@ class ViewController: UIViewController {
             $0.width.equalTo(seriesButton.snp.height)
         }
         
+        // 책표지 크기 설정
         coverImage.snp.makeConstraints {
             $0.width.equalTo(100)
             $0.height.equalTo(coverImage.snp.width).multipliedBy(1.5)
         }
         
+        // 책 표지의 높이를 따르는 topHStackView
         topHStackView.snp.makeConstraints {
             $0.top.equalTo(seriesButton.snp.bottom).offset(16)
             $0.horizontalEdges.equalTo(view.safeAreaInsets).inset(16)
         }
+        
+        dedicationVStackView.snp.makeConstraints {
+            $0.top.equalTo(topHStackView.snp.bottom).offset(24)
+            $0.horizontalEdges.equalTo(view.safeAreaLayoutGuide).inset(16)
+        }
+        
+        summaryVStackView.snp.makeConstraints {
+            $0.top.equalTo(dedicationVStackView.snp.bottom).offset(24)
+            $0.horizontalEdges.equalTo(view.safeAreaLayoutGuide).inset(16)
+        }
+        
     }
 
 }
