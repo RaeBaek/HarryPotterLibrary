@@ -20,7 +20,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		14AB456D2D912AD000AEF07C /* HarryPortterLibrary.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HarryPortterLibrary.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		14AB456D2D912AD000AEF07C /* HarryPotterLibrary.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HarryPotterLibrary.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		14AB45A92D912FCC00AEF07C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		14AB45AA2D912FCC00AEF07C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		14AB45AB2D912FCC00AEF07C /* data.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = data.json; sourceTree = "<group>"; };
@@ -48,7 +48,7 @@
 		14AB45642D912AD000AEF07C = {
 			isa = PBXGroup;
 			children = (
-				14AB45B32D912FCC00AEF07C /* HarryPortterLibrary */,
+				14AB45B32D912FCC00AEF07C /* HarryPotterLibrary */,
 				14AB456E2D912AD000AEF07C /* Products */,
 			);
 			sourceTree = "<group>";
@@ -56,12 +56,12 @@
 		14AB456E2D912AD000AEF07C /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				14AB456D2D912AD000AEF07C /* HarryPortterLibrary.app */,
+				14AB456D2D912AD000AEF07C /* HarryPotterLibrary.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		14AB45B32D912FCC00AEF07C /* HarryPortterLibrary */ = {
+		14AB45B32D912FCC00AEF07C /* HarryPotterLibrary */ = {
 			isa = PBXGroup;
 			children = (
 				14AB45A92D912FCC00AEF07C /* AppDelegate.swift */,
@@ -75,15 +75,15 @@
 				14AB45AC2D912FCC00AEF07C /* Info.plist */,
 				14AB45AE2D912FCC00AEF07C /* LaunchScreen.storyboard */,
 			);
-			path = HarryPortterLibrary;
+			path = HarryPotterLibrary;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		14AB456C2D912AD000AEF07C /* HarryPortterLibrary */ = {
+		14AB456C2D912AD000AEF07C /* HarryPotterLibrary */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 14AB45802D912AD100AEF07C /* Build configuration list for PBXNativeTarget "HarryPortterLibrary" */;
+			buildConfigurationList = 14AB45802D912AD100AEF07C /* Build configuration list for PBXNativeTarget "HarryPotterLibrary" */;
 			buildPhases = (
 				14AB45692D912AD000AEF07C /* Sources */,
 				14AB456A2D912AD000AEF07C /* Frameworks */,
@@ -93,12 +93,12 @@
 			);
 			dependencies = (
 			);
-			name = HarryPortterLibrary;
+			name = HarryPotterLibrary;
 			packageProductDependencies = (
 				14AB45BD2D91385A00AEF07C /* SnapKit */,
 			);
 			productName = HarryPortterLibrary;
-			productReference = 14AB456D2D912AD000AEF07C /* HarryPortterLibrary.app */;
+			productReference = 14AB456D2D912AD000AEF07C /* HarryPotterLibrary.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -116,7 +116,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 14AB45682D912AD000AEF07C /* Build configuration list for PBXProject "HarryPortterLibrary" */;
+			buildConfigurationList = 14AB45682D912AD000AEF07C /* Build configuration list for PBXProject "HarryPotterLibrary" */;
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -133,7 +133,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				14AB456C2D912AD000AEF07C /* HarryPortterLibrary */,
+				14AB456C2D912AD000AEF07C /* HarryPotterLibrary */,
 			);
 		};
 /* End PBXProject section */
@@ -199,7 +199,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.raehoon.HarryPortterLibrary;
+				PRODUCT_BUNDLE_IDENTIFIER = com.raehoon.HarryPotterLibrary;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
@@ -231,7 +231,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.raehoon.HarryPortterLibrary;
+				PRODUCT_BUNDLE_IDENTIFIER = com.raehoon.HarryPotterLibrary;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
@@ -365,7 +365,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		14AB45682D912AD000AEF07C /* Build configuration list for PBXProject "HarryPortterLibrary" */ = {
+		14AB45682D912AD000AEF07C /* Build configuration list for PBXProject "HarryPotterLibrary" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				14AB45832D912AD100AEF07C /* Debug */,
@@ -374,7 +374,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		14AB45802D912AD100AEF07C /* Build configuration list for PBXNativeTarget "HarryPortterLibrary" */ = {
+		14AB45802D912AD100AEF07C /* Build configuration list for PBXNativeTarget "HarryPotterLibrary" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				14AB45812D912AD100AEF07C /* Debug */,
