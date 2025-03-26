@@ -17,6 +17,7 @@
 		14AB45C02D9140EF00AEF07C /* DataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14AB45BF2D9140EF00AEF07C /* DataService.swift */; };
 		14AB45C22D91427B00AEF07C /* Response.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14AB45C12D91427B00AEF07C /* Response.swift */; };
 		14AB45C42D91428A00AEF07C /* Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14AB45C32D91428A00AEF07C /* Error.swift */; };
+		14AB45CC2D93EEED00AEF07C /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14AB45CB2D93EEED00AEF07C /* Constants.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -31,6 +32,7 @@
 		14AB45BF2D9140EF00AEF07C /* DataService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataService.swift; sourceTree = "<group>"; };
 		14AB45C12D91427B00AEF07C /* Response.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Response.swift; sourceTree = "<group>"; };
 		14AB45C32D91428A00AEF07C /* Error.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Error.swift; sourceTree = "<group>"; };
+		14AB45CB2D93EEED00AEF07C /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -70,6 +72,7 @@
 				14AB45BF2D9140EF00AEF07C /* DataService.swift */,
 				14AB45C12D91427B00AEF07C /* Response.swift */,
 				14AB45C32D91428A00AEF07C /* Error.swift */,
+				14AB45CB2D93EEED00AEF07C /* Constants.swift */,
 				14AB45AA2D912FCC00AEF07C /* Assets.xcassets */,
 				14AB45AB2D912FCC00AEF07C /* data.json */,
 				14AB45AC2D912FCC00AEF07C /* Info.plist */,
@@ -160,6 +163,7 @@
 				14AB45B52D912FCC00AEF07C /* SceneDelegate.swift in Sources */,
 				14AB45B62D912FCC00AEF07C /* ViewController.swift in Sources */,
 				14AB45C02D9140EF00AEF07C /* DataService.swift in Sources */,
+				14AB45CC2D93EEED00AEF07C /* Constants.swift in Sources */,
 				14AB45C42D91428A00AEF07C /* Error.swift in Sources */,
 				14AB45C22D91427B00AEF07C /* Response.swift in Sources */,
 			);

@@ -36,11 +36,19 @@ class ViewController: UIViewController {
         return view
     }()
     
+    // 시리즈 버튼 아래로 보여질 스크롤뷰
+    let seriesScrollView = {
+        let view = UIScrollView()
+        view.showsVerticalScrollIndicator = false
+        view.showsHorizontalScrollIndicator = false
+        return view
+    }()
+    
     // 최상단 HStackView
     let topHStackView = {
         let view = UIStackView()
         view.axis = .horizontal
-        view.spacing = 8
+        view.spacing = 20
         view.alignment = .leading
         return view
     }()
@@ -80,6 +88,7 @@ class ViewController: UIViewController {
     let authorLabel = {
         let view = UILabel()
         view.font = .systemFont(ofSize: 16, weight: .bold)
+        view.text = Constants.Title.author
         view.textColor = .black
         return view
     }()
@@ -103,6 +112,7 @@ class ViewController: UIViewController {
     let releasedLabel = {
         let view = UILabel()
         view.font = .systemFont(ofSize: 14, weight: .bold)
+        view.text = Constants.Title.released
         view.textColor = .black
         return view
     }()
@@ -126,6 +136,7 @@ class ViewController: UIViewController {
     let pageLabel = {
         let view = UILabel()
         view.font = .systemFont(ofSize: 14, weight: .bold)
+        view.text = Constants.Title.page
         view.textColor = .black
         return view
     }()
@@ -149,6 +160,7 @@ class ViewController: UIViewController {
     let dedicationLabel = {
         let view = UILabel()
         view.font = .systemFont(ofSize: 18, weight: .bold)
+        view.text = Constants.Title.dedication
         view.textColor = .black
         return view
     }()
@@ -173,6 +185,7 @@ class ViewController: UIViewController {
     let summaryLabel = {
         let view = UILabel()
         view.font = .systemFont(ofSize: 18, weight: .bold)
+        view.text = Constants.Title.summary
         view.textColor = .black
         return view
     }()
@@ -182,6 +195,31 @@ class ViewController: UIViewController {
         view.font = .systemFont(ofSize: 14, weight: .regular)
         view.textColor = .darkGray
         view.numberOfLines = 0
+        return view
+    }()
+    
+    // 챕터 VStackView
+    let chaptersVStackView = {
+        let view = UIStackView()
+        view.axis = .vertical
+        view.spacing = 8
+        view.alignment = .leading
+        return view
+    }()
+    
+    let chaptersLabel = {
+        let view = UILabel()
+        view.font = .systemFont(ofSize: 18, weight: .bold)
+        view.text = Constants.Title.chapters
+        view.textColor = .black
+        return view
+    }()
+    
+    let chaptersContentVStackView = {
+        let view = UIStackView()
+        view.axis = .vertical
+        view.spacing = 8
+        view.alignment = .leading
         return view
     }()
     
@@ -215,23 +253,38 @@ class ViewController: UIViewController {
         }
         
         titleLabel.text = harryPoterLibrary[0].title
-        coverImage.image = UIImage(named: "harrypotter1")
+        coverImage.image = Constants.Image.harrypotter1
         bookTitleLabel.text = harryPoterLibrary[0].title
         
-        authorLabel.text = "Author"
         authoreNameLabel.text = harryPoterLibrary[0].author
         
-        releasedLabel.text = "Released"
         releasedDateLabel.text = harryPoterLibrary[0].releaseDate
         
-        pageLabel.text = "Page"
         pageNumberLabel.text = "\(harryPoterLibrary[0].pages)"
         
-        dedicationLabel.text = "Dedication"
         dedicationContentLabel.text = harryPoterLibrary[0].dedication
         
-        summaryLabel.text = "Summary"
         summaryContentLabel.text = harryPoterLibrary[0].summary
+        
+        updateChapters()
+    }
+    
+    private func updateChapters() {
+        // 기존 뷰 제거
+        chaptersContentVStackView.arrangedSubviews.forEach {
+            chaptersContentVStackView.removeArrangedSubview($0)
+            $0.removeFromSuperview()
+        }
+        
+        // 새 챕터 추가
+        for (index, chapter) in harryPoterLibrary[0].chapters.enumerated() {
+            let chapterLabel = UILabel()
+            chapterLabel.text = "\(index + 1). \(chapter)"
+            chapterLabel.font = .systemFont(ofSize: 14, weight: .regular)
+            chapterLabel.textColor = .darkGray
+            chapterLabel.numberOfLines = 0
+            chaptersContentVStackView.addArrangedSubview(chapterLabel)
+        }
     }
     
     private func showAlert(_ title: String) {
@@ -248,8 +301,12 @@ class ViewController: UIViewController {
     private func configureView() {
         view.backgroundColor = .systemBackground
         
-        [titleLabel, seriesButton, topHStackView, dedicationVStackView, summaryVStackView].forEach {
+        [titleLabel, seriesButton, seriesScrollView].forEach {
             view.addSubview($0)
+        }
+        
+        [topHStackView, dedicationVStackView, summaryVStackView, chaptersVStackView].forEach {
+            seriesScrollView.addSubview($0)
         }
         
         [authorLabel, authoreNameLabel].forEach {
@@ -280,6 +337,10 @@ class ViewController: UIViewController {
             summaryVStackView.addArrangedSubview($0)
         }
         
+        [chaptersLabel, chaptersContentVStackView].forEach {
+            chaptersVStackView.addArrangedSubview($0)
+        }
+        
     }
     
     private func setConstraints() {
@@ -297,6 +358,12 @@ class ViewController: UIViewController {
             $0.width.equalTo(seriesButton.snp.height)
         }
         
+        seriesScrollView.snp.makeConstraints {
+            $0.top.equalTo(seriesButton.snp.bottom).offset(24)
+            $0.horizontalEdges.equalToSuperview().inset(20)
+            $0.bottom.equalTo(view.safeAreaLayoutGuide)
+        }
+        
         // 책표지 크기 설정
         coverImage.snp.makeConstraints {
             $0.width.equalTo(100)
@@ -305,18 +372,28 @@ class ViewController: UIViewController {
         
         // 책 표지의 높이를 따르는 topHStackView
         topHStackView.snp.makeConstraints {
-            $0.top.equalTo(seriesButton.snp.bottom).offset(16)
-            $0.horizontalEdges.equalTo(view.safeAreaInsets).inset(16)
+            $0.top.equalToSuperview()
+            $0.horizontalEdges.equalToSuperview()
+            $0.width.equalTo(seriesScrollView.snp.width)
         }
         
+        // 헌정사 VStack Layout
         dedicationVStackView.snp.makeConstraints {
             $0.top.equalTo(topHStackView.snp.bottom).offset(24)
-            $0.horizontalEdges.equalTo(view.safeAreaLayoutGuide).inset(16)
+            $0.horizontalEdges.equalTo(view.safeAreaLayoutGuide).inset(20)
         }
         
+        // 요약 VStack Layout
         summaryVStackView.snp.makeConstraints {
             $0.top.equalTo(dedicationVStackView.snp.bottom).offset(24)
-            $0.horizontalEdges.equalTo(view.safeAreaLayoutGuide).inset(16)
+            $0.horizontalEdges.equalTo(view.safeAreaLayoutGuide).inset(20)
+        }
+        
+        // 챕터 VStack Layout
+        chaptersVStackView.snp.makeConstraints {
+            $0.top.equalTo(summaryContentLabel.snp.bottom).offset(24)
+            $0.horizontalEdges.equalTo(view.safeAreaLayoutGuide).inset(20)
+            $0.bottom.equalToSuperview()
         }
         
     }
