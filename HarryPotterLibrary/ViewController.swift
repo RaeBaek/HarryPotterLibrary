@@ -25,14 +25,12 @@ class ViewController: UIViewController {
     // 시리즈 버튼
     let seriesButton = {
         var config = UIButton.Configuration.filled()
-        config.title = "1"
+        config.attributedTitle = AttributedString("1", attributes: .init([.font: UIFont.systemFont(ofSize: 16, weight: .regular)]))
         config.baseBackgroundColor = .systemBlue
         config.baseForegroundColor = .white
         config.cornerStyle = .capsule
         
         let view = UIButton(configuration: config)
-        view.titleLabel?.font = .systemFont(ofSize: 16, weight: .regular)
-        
         return view
     }()
     
@@ -198,6 +196,9 @@ class ViewController: UIViewController {
         return view
     }()
     
+    // 더보기, 접기 버튼
+    var moreButton: UIButton?
+    
     // 챕터 VStackView
     let chaptersVStackView = {
         let view = UIStackView()
@@ -264,7 +265,12 @@ class ViewController: UIViewController {
         
         dedicationContentLabel.text = harryPoterLibrary[0].dedication
         
-        summaryContentLabel.text = harryPoterLibrary[0].summary
+        let (bool, string) = checkedCharacters(harryPoterLibrary[0].summary)
+        summaryContentLabel.text = string
+        
+        if bool {
+            setMoreButton()
+        }
         
         updateChapters()
     }
@@ -285,6 +291,67 @@ class ViewController: UIViewController {
             chapterLabel.numberOfLines = 0
             chaptersContentVStackView.addArrangedSubview(chapterLabel)
         }
+    }
+    
+    // 요약문이 450자 이상, 미만인지 먼저 체크
+    private func checkedCharacters(_ originalText: String) -> (Bool, String) {
+        let maxCharacters = 450
+        
+        if originalText.count > maxCharacters {
+            if UserDefaults.standard.bool(forKey: "moreButtonEnable") {
+                return (true, originalText)
+            } else {
+                return (true, String(originalText.prefix(maxCharacters)) + "...")
+            }
+        } else {
+            return (false, originalText)
+        }
+    }
+    
+    private func setMoreButton() {
+        var config = UIButton.Configuration.plain()
+        config.contentInsets = NSDirectionalEdgeInsets(top: 5, leading: 5, bottom: 5, trailing: 5)
+        
+        if UserDefaults.standard.bool(forKey: "moreButtonEnable") {
+            config.attributedTitle = AttributedString("접기", attributes: .init([.font: UIFont.systemFont(ofSize: 13, weight: .regular)]))
+        } else {
+            config.attributedTitle = AttributedString("더 보기", attributes: .init([.font: UIFont.systemFont(ofSize: 13, weight: .regular)]))
+        }
+        
+        moreButton = UIButton(configuration: config)
+        moreButton?.addTarget(self, action: #selector(moreButtonTapped), for: .touchUpInside)
+        
+        seriesScrollView.addSubview(moreButton!)
+        
+        // moreButton의 제약조건을 잡기 위해 기존의 chaptersVStackView 제약조건 제거
+        chaptersVStackView.snp.removeConstraints()
+        
+        // moreButton Layout 구성
+        moreButton!.snp.makeConstraints {
+            $0.top.equalTo(summaryVStackView.snp.bottom).offset(8)
+            $0.trailing.equalToSuperview().offset(5)
+        }
+        
+        // moreButton 하단에 chaptersVStackView Layout 구성
+        chaptersVStackView.snp.makeConstraints {
+            $0.top.equalTo(moreButton!.snp.bottom).offset(24)
+            $0.horizontalEdges.equalToSuperview()
+            $0.bottom.equalToSuperview()
+        }
+        
+    }
+    
+    // 더 보기, 접기 상황에 맞게 버튼 title과 summaryContentLabel text 수정
+    @objc private func moreButtonTapped() {
+        if UserDefaults.standard.bool(forKey: "moreButtonEnable") {
+            UserDefaults.standard.set(false, forKey: "moreButtonEnable")
+            moreButton?.configuration?.attributedTitle = AttributedString("더 보기", attributes: .init([.font: UIFont.systemFont(ofSize: 13, weight: .regular)]))
+        } else {
+            UserDefaults.standard.set(true, forKey: "moreButtonEnable")
+            moreButton?.configuration?.attributedTitle = AttributedString("접기", attributes: .init([.font: UIFont.systemFont(ofSize: 13, weight: .regular)]))
+        }
+        
+        summaryContentLabel.text = checkedCharacters(harryPoterLibrary[0].summary).1
     }
     
     private func showAlert(_ title: String) {
@@ -380,19 +447,19 @@ class ViewController: UIViewController {
         // 헌정사 VStack Layout
         dedicationVStackView.snp.makeConstraints {
             $0.top.equalTo(topHStackView.snp.bottom).offset(24)
-            $0.horizontalEdges.equalTo(view.safeAreaLayoutGuide).inset(20)
+            $0.horizontalEdges.equalToSuperview()
         }
         
         // 요약 VStack Layout
         summaryVStackView.snp.makeConstraints {
             $0.top.equalTo(dedicationVStackView.snp.bottom).offset(24)
-            $0.horizontalEdges.equalTo(view.safeAreaLayoutGuide).inset(20)
+            $0.horizontalEdges.equalToSuperview()
         }
         
         // 챕터 VStack Layout
         chaptersVStackView.snp.makeConstraints {
-            $0.top.equalTo(summaryContentLabel.snp.bottom).offset(24)
-            $0.horizontalEdges.equalTo(view.safeAreaLayoutGuide).inset(20)
+            $0.top.equalTo(summaryVStackView.snp.bottom).offset(24)
+            $0.horizontalEdges.equalToSuperview()
             $0.bottom.equalToSuperview()
         }
         
