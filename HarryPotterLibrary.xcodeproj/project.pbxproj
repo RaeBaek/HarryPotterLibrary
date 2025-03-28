@@ -18,6 +18,8 @@
 		14AB45C22D91427B00AEF07C /* Response.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14AB45C12D91427B00AEF07C /* Response.swift */; };
 		14AB45C42D91428A00AEF07C /* Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14AB45C32D91428A00AEF07C /* Error.swift */; };
 		14AB45CC2D93EEED00AEF07C /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14AB45CB2D93EEED00AEF07C /* Constants.swift */; };
+		14AB45D92D953B7900AEF07C /* SeriesButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14AB45D82D953B7900AEF07C /* SeriesButton.swift */; };
+		14AB45DB2D9680A600AEF07C /* UserDefaultManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14AB45DA2D9680A600AEF07C /* UserDefaultManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -33,6 +35,8 @@
 		14AB45C12D91427B00AEF07C /* Response.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Response.swift; sourceTree = "<group>"; };
 		14AB45C32D91428A00AEF07C /* Error.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Error.swift; sourceTree = "<group>"; };
 		14AB45CB2D93EEED00AEF07C /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		14AB45D82D953B7900AEF07C /* SeriesButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeriesButton.swift; sourceTree = "<group>"; };
+		14AB45DA2D9680A600AEF07C /* UserDefaultManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -66,6 +70,7 @@
 		14AB45B32D912FCC00AEF07C /* HarryPotterLibrary */ = {
 			isa = PBXGroup;
 			children = (
+				14AB45D72D953B6D00AEF07C /* CustomView */,
 				14AB45A92D912FCC00AEF07C /* AppDelegate.swift */,
 				14AB45B12D912FCC00AEF07C /* SceneDelegate.swift */,
 				14AB45B22D912FCC00AEF07C /* ViewController.swift */,
@@ -79,6 +84,15 @@
 				14AB45AE2D912FCC00AEF07C /* LaunchScreen.storyboard */,
 			);
 			path = HarryPotterLibrary;
+			sourceTree = "<group>";
+		};
+		14AB45D72D953B6D00AEF07C /* CustomView */ = {
+			isa = PBXGroup;
+			children = (
+				14AB45D82D953B7900AEF07C /* SeriesButton.swift */,
+				14AB45DA2D9680A600AEF07C /* UserDefaultManager.swift */,
+			);
+			path = CustomView;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -163,7 +177,9 @@
 				14AB45B52D912FCC00AEF07C /* SceneDelegate.swift in Sources */,
 				14AB45B62D912FCC00AEF07C /* ViewController.swift in Sources */,
 				14AB45C02D9140EF00AEF07C /* DataService.swift in Sources */,
+				14AB45D92D953B7900AEF07C /* SeriesButton.swift in Sources */,
 				14AB45CC2D93EEED00AEF07C /* Constants.swift in Sources */,
+				14AB45DB2D9680A600AEF07C /* UserDefaultManager.swift in Sources */,
 				14AB45C42D91428A00AEF07C /* Error.swift in Sources */,
 				14AB45C22D91427B00AEF07C /* Response.swift in Sources */,
 			);

@@ -20,17 +20,12 @@ class ViewController: UIViewController {
         return view
     }()
     
-    // iOS 15 이상부터 지원하는 코드
-    // 개발 환경 세팅에서 iOS Minimum Deployments 버전을 16.0으로 설정했기에 사용
-    // 시리즈 버튼
-    let seriesButton = {
-        var config = UIButton.Configuration.filled()
-        config.attributedTitle = AttributedString("1", attributes: .init([.font: UIFont.systemFont(ofSize: 16, weight: .regular)]))
-        config.baseBackgroundColor = .systemBlue
-        config.baseForegroundColor = .white
-        config.cornerStyle = .capsule
-        
-        let view = UIButton(configuration: config)
+    // 시리즈 HStackView
+    let seriesHStackView = {
+        let view = UIStackView()
+        view.axis = .horizontal
+        view.spacing = 10
+        view.alignment = .center
         return view
     }()
     
@@ -226,6 +221,10 @@ class ViewController: UIViewController {
     
     let dataService = DataService()
     var harryPoterLibrary: [Book] = []
+    var userDefaultManager = UserDefaultManager.shared
+    
+    // 이전 선택된 버튼을 추적할 변수
+    private var previousSelectedButton: UIButton?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -253,29 +252,92 @@ class ViewController: UIViewController {
             }
         }
         
-        titleLabel.text = harryPoterLibrary[0].title
-        coverImage.image = Constants.Image.harrypotter1
-        bookTitleLabel.text = harryPoterLibrary[0].title
-        
-        authoreNameLabel.text = harryPoterLibrary[0].author
-        
-        releasedDateLabel.text = harryPoterLibrary[0].releaseDate
-        
-        pageNumberLabel.text = "\(harryPoterLibrary[0].pages)"
-        
-        dedicationContentLabel.text = harryPoterLibrary[0].dedication
-        
-        let (bool, string) = checkedCharacters(harryPoterLibrary[0].summary)
-        summaryContentLabel.text = string
-        
-        if bool {
-            setMoreButton()
+        // 최초 실행 시, currentSeriesButtonIndex가 없다면 1로 설정
+        if UserDefaults.standard.value(forKey: "currentSeriesButtonIndex") == nil {
+            UserDefaults.standard.set(1, forKey: "currentSeriesButtonIndex")  // 최초 실행 시 1로 설정
         }
         
-        updateChapters()
+        if let index = UserDefaults.standard.value(forKey: "currentSeriesButtonIndex") as? Int {
+            setPageInfo(index)
+        }
+        
+        setSeriesButton()
     }
     
-    private func updateChapters() {
+    private func setPageInfo(_ index: Int) {
+        let libraryIndex = index - 1
+        
+        titleLabel.text = harryPoterLibrary[libraryIndex].title
+        coverImage.image = UIImage(named: "harrypotter\(index)") //Constants.Image.harrypotter1
+        bookTitleLabel.text = harryPoterLibrary[libraryIndex].title
+        
+        authoreNameLabel.text = harryPoterLibrary[libraryIndex].author
+        releasedDateLabel.text = harryPoterLibrary[libraryIndex].releaseDate
+        pageNumberLabel.text = "\(harryPoterLibrary[libraryIndex].pages)"
+        
+        dedicationContentLabel.text = harryPoterLibrary[libraryIndex].dedication
+        
+        let (bool, string) = checkedCharacters(index, harryPoterLibrary[libraryIndex].summary)
+        summaryContentLabel.text = string
+        
+        // moreButton의 제약조건을 잡기 위해 기존의 chaptersVStackView 제약조건 제거
+        moreButton?.removeFromSuperview()
+        chaptersVStackView.snp.removeConstraints()
+        
+        if bool {
+            setMoreButton(index)
+        } else {
+            setConstraints()
+        }
+        
+        updateChapters(libraryIndex)
+    }
+    
+    // 시리즈 버튼 설정
+    private func setSeriesButton() {
+        if let index = UserDefaults.standard.value(forKey: "currentSeriesButtonIndex") as? Int {
+            for i in 1...harryPoterLibrary.count {
+                let seriesButton = SeriesButton(frame: .zero, title: "\(i)", size: 16)
+                
+                if i == index {
+                    seriesButton.configuration?.baseForegroundColor = .white
+                    seriesButton.configuration?.baseBackgroundColor = .systemBlue
+                    
+                    previousSelectedButton = seriesButton
+                }
+                
+                seriesButton.tag = i
+                seriesButton.addTarget(self, action: #selector(seriesButtonTapped(_:)), for: .touchUpInside)
+                
+                seriesHStackView.addArrangedSubview(seriesButton)
+                seriesButton.snp.makeConstraints {
+                    $0.width.equalTo(seriesButton.snp.height)
+                }
+            }
+        }
+        
+    }
+    
+    // 각각의 시리즈 버튼 클릭 시
+    @objc private func seriesButtonTapped(_ sender: UIButton) {
+        // 이전 버튼이 있는 경우, 색상 리셋
+        if let previousSelectedButton {
+            previousSelectedButton.configuration?.baseForegroundColor = .systemBlue
+            previousSelectedButton.configuration?.baseBackgroundColor = .systemGray5
+        }
+        
+        sender.configuration?.baseForegroundColor = .white
+        sender.configuration?.baseBackgroundColor = .systemBlue
+        
+        previousSelectedButton = sender
+        
+        UserDefaults.standard.set(sender.tag, forKey: "currentSeriesButtonIndex")
+        
+        setPageInfo(sender.tag)
+    }
+    
+    // 챕터 스택 뷰 내용 업데이트
+    private func updateChapters(_ index: Int) {
         // 기존 뷰 제거
         chaptersContentVStackView.arrangedSubviews.forEach {
             chaptersContentVStackView.removeArrangedSubview($0)
@@ -283,9 +345,9 @@ class ViewController: UIViewController {
         }
         
         // 새 챕터 추가
-        for (index, chapter) in harryPoterLibrary[0].chapters.enumerated() {
+        for chapter in harryPoterLibrary[index].chapters {
             let chapterLabel = UILabel()
-            chapterLabel.text = "\(index + 1). \(chapter)"
+            chapterLabel.text = chapter.title
             chapterLabel.font = .systemFont(ofSize: 14, weight: .regular)
             chapterLabel.textColor = .darkGray
             chapterLabel.numberOfLines = 0
@@ -294,11 +356,11 @@ class ViewController: UIViewController {
     }
     
     // 요약문이 450자 이상, 미만인지 먼저 체크
-    private func checkedCharacters(_ originalText: String) -> (Bool, String) {
+    private func checkedCharacters(_ index: Int, _ originalText: String) -> (Bool, String) {
         let maxCharacters = 450
         
         if originalText.count > maxCharacters {
-            if UserDefaults.standard.bool(forKey: "moreButtonEnable") {
+            if UserDefaults.standard.bool(forKey: "moreButtonEnable_\(index)") {
                 return (true, originalText)
             } else {
                 return (true, String(originalText.prefix(maxCharacters)) + "...")
@@ -308,23 +370,22 @@ class ViewController: UIViewController {
         }
     }
     
-    private func setMoreButton() {
+    // 더보기 버튼 설정
+    private func setMoreButton(_ index: Int) {
         var config = UIButton.Configuration.plain()
         config.contentInsets = NSDirectionalEdgeInsets(top: 5, leading: 5, bottom: 5, trailing: 5)
         
-        if UserDefaults.standard.bool(forKey: "moreButtonEnable") {
+        if UserDefaults.standard.bool(forKey: "moreButtonEnable_\(index)") {
             config.attributedTitle = AttributedString("접기", attributes: .init([.font: UIFont.systemFont(ofSize: 13, weight: .regular)]))
         } else {
             config.attributedTitle = AttributedString("더 보기", attributes: .init([.font: UIFont.systemFont(ofSize: 13, weight: .regular)]))
         }
         
         moreButton = UIButton(configuration: config)
+        moreButton?.tag = index
         moreButton?.addTarget(self, action: #selector(moreButtonTapped), for: .touchUpInside)
         
         seriesScrollView.addSubview(moreButton!)
-        
-        // moreButton의 제약조건을 잡기 위해 기존의 chaptersVStackView 제약조건 제거
-        chaptersVStackView.snp.removeConstraints()
         
         // moreButton Layout 구성
         moreButton!.snp.makeConstraints {
@@ -342,18 +403,21 @@ class ViewController: UIViewController {
     }
     
     // 더 보기, 접기 상황에 맞게 버튼 title과 summaryContentLabel text 수정
-    @objc private func moreButtonTapped() {
-        if UserDefaults.standard.bool(forKey: "moreButtonEnable") {
-            UserDefaults.standard.set(false, forKey: "moreButtonEnable")
+    @objc private func moreButtonTapped(_ sender: UIButton) {
+        let index = sender.tag
+        
+        if UserDefaults.standard.bool(forKey: "moreButtonEnable_\(index)") {
+            UserDefaults.standard.set(false, forKey: "moreButtonEnable_\(index)")
             moreButton?.configuration?.attributedTitle = AttributedString("더 보기", attributes: .init([.font: UIFont.systemFont(ofSize: 13, weight: .regular)]))
         } else {
-            UserDefaults.standard.set(true, forKey: "moreButtonEnable")
+            UserDefaults.standard.set(true, forKey: "moreButtonEnable_\(index)")
             moreButton?.configuration?.attributedTitle = AttributedString("접기", attributes: .init([.font: UIFont.systemFont(ofSize: 13, weight: .regular)]))
         }
         
-        summaryContentLabel.text = checkedCharacters(harryPoterLibrary[0].summary).1
+        summaryContentLabel.text = checkedCharacters(index, harryPoterLibrary[index - 1].summary).1
     }
     
+    // 알림 보여주기
     private func showAlert(_ title: String) {
         let alert = UIAlertController(title: title, message: "다시 시도해 주세요.", preferredStyle: .alert)
         let okAction = UIAlertAction(title: "확인", style: .default)
@@ -368,7 +432,7 @@ class ViewController: UIViewController {
     private func configureView() {
         view.backgroundColor = .systemBackground
         
-        [titleLabel, seriesButton, seriesScrollView].forEach {
+        [titleLabel, seriesHStackView, seriesScrollView].forEach {
             view.addSubview($0)
         }
         
@@ -417,17 +481,16 @@ class ViewController: UIViewController {
             $0.horizontalEdges.equalToSuperview().inset(20)
         }
         
-        seriesButton.snp.makeConstraints {
+        seriesHStackView.snp.makeConstraints {
             $0.top.equalTo(titleLabel.snp.bottom).offset(16)
             $0.centerX.equalToSuperview()
             // UIButton.Configuration으로 작성한 UIButton은
             // 너비와 높이가 같을 경우 자동으로 원형이 됨.
-            $0.width.equalTo(seriesButton.snp.height)
         }
         
         seriesScrollView.snp.makeConstraints {
-            $0.top.equalTo(seriesButton.snp.bottom).offset(24)
-            $0.horizontalEdges.equalToSuperview().inset(20)
+            $0.top.equalTo(seriesHStackView.snp.bottom).offset(24)
+            $0.horizontalEdges.equalTo(view.safeAreaLayoutGuide).inset(20)
             $0.bottom.equalTo(view.safeAreaLayoutGuide)
         }
         
