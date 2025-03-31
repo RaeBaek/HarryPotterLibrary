@@ -37,6 +37,9 @@ class ViewController: UIViewController {
         return view
     }()
     
+    // 스크롤뷰 안에 잡혀질 컨텐트 뷰
+    let contentView = UIView()
+    
     // 최상단 HStackView
     let topHStackView = {
         let view = UIStackView()
@@ -299,7 +302,7 @@ class ViewController: UIViewController {
         moreButton?.tag = index
         moreButton?.addTarget(self, action: #selector(moreButtonTapped), for: .touchUpInside)
         
-        seriesScrollView.addSubview(moreButton!)
+        contentView.addSubview(moreButton!)
         layoutMoreButton()
     }
     
@@ -338,7 +341,9 @@ class ViewController: UIViewController {
         
         view.addSubviews(titleLabel, seriesHStackView, seriesScrollView)
         
-        seriesScrollView.addSubviews(topHStackView, dedicationVStackView, summaryVStackView, chaptersVStackView)
+        seriesScrollView.addSubview(contentView)
+        
+        contentView.addSubviews(topHStackView, dedicationVStackView, summaryVStackView, chaptersVStackView)
         
         authorHStackView.addArrangedSubviews(authorLabel, authorNameLabel)
         releaseHStackView.addArrangedSubviews(releasedLabel, releasedDateLabel)
@@ -361,14 +366,17 @@ class ViewController: UIViewController {
         seriesHStackView.snp.makeConstraints {
             $0.top.equalTo(titleLabel.snp.bottom).offset(16)
             $0.centerX.equalToSuperview()
-            // UIButton.Configuration으로 작성한 UIButton은
-            // 너비와 높이가 같을 경우 자동으로 원형이 됨.
         }
         
         seriesScrollView.snp.makeConstraints {
-            $0.top.equalTo(seriesHStackView.snp.bottom).offset(24)
+            $0.top.equalTo(seriesHStackView.snp.bottom).offset(16)
             $0.horizontalEdges.equalTo(view.safeAreaLayoutGuide).inset(20)
             $0.bottom.equalTo(view.safeAreaLayoutGuide)
+        }
+        
+        contentView.snp.makeConstraints {
+            $0.edges.equalTo(seriesScrollView.contentLayoutGuide)
+            $0.width.equalTo(seriesScrollView.frameLayoutGuide)
         }
         
         // 책표지 크기 설정
@@ -379,9 +387,9 @@ class ViewController: UIViewController {
         
         // 책 표지의 높이를 따르는 topHStackView
         topHStackView.snp.makeConstraints {
-            $0.top.equalToSuperview()
+            $0.top.equalToSuperview().offset(16)
             $0.horizontalEdges.equalToSuperview()
-            $0.width.equalTo(seriesScrollView.snp.width)
+            $0.width.equalTo(contentView.snp.width)
         }
         
         // 헌정사 VStack Layout
@@ -400,7 +408,7 @@ class ViewController: UIViewController {
         chaptersVStackView.snp.makeConstraints {
             $0.top.equalTo(summaryVStackView.snp.bottom).offset(24)
             $0.horizontalEdges.equalToSuperview()
-            $0.bottom.equalToSuperview()
+            $0.bottom.equalToSuperview().offset(-16)
         }
     }
     
@@ -415,7 +423,7 @@ class ViewController: UIViewController {
         chaptersVStackView.snp.makeConstraints {
             $0.top.equalTo(moreButton!.snp.bottom).offset(24)
             $0.horizontalEdges.equalToSuperview()
-            $0.bottom.equalToSuperview()
+            $0.bottom.equalToSuperview().offset(-16)
         }
     }
 }
