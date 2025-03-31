@@ -114,12 +114,21 @@ class ViewController: UIViewController {
     
     let chaptersContentVStackView = CustomVStackView()
     
-    let dataService = DataService()
+    private let dataService: DataService
     var harryPoterLibrary: [Book] = []
     var userDefaultsManager = UserDefaultsManager.shared
     
     // 이전 선택된 버튼을 추적할 변수
     private var previousSelectedButton: UIButton?
+    
+    init(dataService: DataService = DataService()) {
+        self.dataService = dataService
+        super.init()
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
