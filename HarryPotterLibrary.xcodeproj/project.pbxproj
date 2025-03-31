@@ -25,6 +25,7 @@
 		14AB45E32D9A4F4500AEF07C /* CustomVStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14AB45E22D9A4F4500AEF07C /* CustomVStackView.swift */; };
 		14AB45E92D9A636400AEF07C /* Extension+UIStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14AB45E82D9A636400AEF07C /* Extension+UIStackView.swift */; };
 		14AB45EB2D9A64A900AEF07C /* Extension+UIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14AB45EA2D9A64A900AEF07C /* Extension+UIView.swift */; };
+		14AB45ED2D9AA13A00AEF07C /* Extension+String.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14AB45EC2D9AA13A00AEF07C /* Extension+String.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -47,6 +48,7 @@
 		14AB45E22D9A4F4500AEF07C /* CustomVStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomVStackView.swift; sourceTree = "<group>"; };
 		14AB45E82D9A636400AEF07C /* Extension+UIStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension+UIStackView.swift"; sourceTree = "<group>"; };
 		14AB45EA2D9A64A900AEF07C /* Extension+UIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension+UIView.swift"; sourceTree = "<group>"; };
+		14AB45EC2D9AA13A00AEF07C /* Extension+String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension+String.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -138,6 +140,7 @@
 			children = (
 				14AB45E82D9A636400AEF07C /* Extension+UIStackView.swift */,
 				14AB45EA2D9A64A900AEF07C /* Extension+UIView.swift */,
+				14AB45EC2D9AA13A00AEF07C /* Extension+String.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -225,6 +228,7 @@
 				14AB45E92D9A636400AEF07C /* Extension+UIStackView.swift in Sources */,
 				14AB45B42D912FCC00AEF07C /* AppDelegate.swift in Sources */,
 				14AB45B52D912FCC00AEF07C /* SceneDelegate.swift in Sources */,
+				14AB45ED2D9AA13A00AEF07C /* Extension+String.swift in Sources */,
 				14AB45B62D912FCC00AEF07C /* ViewController.swift in Sources */,
 				14AB45C02D9140EF00AEF07C /* DataService.swift in Sources */,
 				14AB45D92D953B7900AEF07C /* SeriesButton.swift in Sources */,

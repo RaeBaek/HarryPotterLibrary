@@ -176,7 +176,7 @@ class ViewController: UIViewController {
         bookTitleLabel.text = book.title
         
         authorNameLabel.text = book.author
-        releasedDateLabel.text = book.releaseDate
+        releasedDateLabel.text = book.releaseDate.formattedDate
         pageNumberLabel.text = "\(book.pages)"
         
         dedicationContentLabel.text = book.dedication
@@ -190,7 +190,7 @@ class ViewController: UIViewController {
         moreButton?.removeFromSuperview()
         chaptersVStackView.snp.removeConstraints()
         
-        if book.summary.count > 450 {
+        if book.summary.count > Constants.Summary.maxLength {
             setMoreButton(index)
         } else {
             setConstraints()
@@ -233,6 +233,8 @@ class ViewController: UIViewController {
         UserDefaults.standard.set(sender.tag, forKey: UserDefaultsKey.currentSeriesButtonIndex)
         
         setPageInfo(sender.tag)
+        
+        seriesScrollView.setContentOffset(.zero, animated: true)
     }
     
     private func applySelectedStyle(to button: UIButton) {
@@ -245,12 +247,13 @@ class ViewController: UIViewController {
         button.configuration?.baseBackgroundColor = .systemGray5
     }
     
-    // 챕터 스택 뷰 내용 업데이트 (삭제, 추가)
+    // 챕터 스택 뷰 내용 업데이트
     private func updateChapters(_ index: Int) {
         clearChapters()
         addChapters(from: harryPoterLibrary[index])
     }
     
+    // 기존 스택 뷰 제거
     private func clearChapters() {
         chaptersContentVStackView.arrangedSubviews.forEach {
             chaptersContentVStackView.removeArrangedSubview($0)
@@ -258,6 +261,7 @@ class ViewController: UIViewController {
         }
     }
     
+    // 새로운 스택 뷰 추가
     private func addChapters(from book: Book) {
         for chapter in book.chapters {
             let chapterLabel = UILabel()
@@ -271,13 +275,11 @@ class ViewController: UIViewController {
     
     // 요약문이 450자 이상, 미만인지 먼저 체크
     private func checkedCharacters(_ index: Int, _ originalText: String) -> String {
-        let maxCharacters = 450
-        
-        if originalText.count > maxCharacters {
+        if originalText.count > Constants.Summary.maxLength {
             if userDefaultsManager.getMoreButtonEnable(index) {
                 return originalText
             } else {
-                return String(originalText.prefix(maxCharacters)) + "..."
+                return String(originalText.prefix(Constants.Summary.maxLength)) + "..."
             }
         } else {
             return originalText
@@ -298,19 +300,7 @@ class ViewController: UIViewController {
         moreButton?.addTarget(self, action: #selector(moreButtonTapped), for: .touchUpInside)
         
         seriesScrollView.addSubview(moreButton!)
-        
-        // moreButton Layout 구성
-        moreButton!.snp.makeConstraints {
-            $0.top.equalTo(summaryVStackView.snp.bottom).offset(8)
-            $0.trailing.equalToSuperview().offset(5)
-        }
-        
-        // moreButton 하단에 chaptersVStackView Layout 구성
-        chaptersVStackView.snp.makeConstraints {
-            $0.top.equalTo(moreButton!.snp.bottom).offset(24)
-            $0.horizontalEdges.equalToSuperview()
-            $0.bottom.equalToSuperview()
-        }
+        layoutMoreButton()
     }
     
     // 더 보기, 접기 상황에 맞게 버튼 title과 summaryContentLabel text 수정
@@ -326,6 +316,7 @@ class ViewController: UIViewController {
         summaryContentLabel.text = checkedCharacters(index, harryPoterLibrary[index - 1].summary)
     }
     
+    // 더 보기, 접기 버튼 title 설정
     private func setAttributedTitle(title: String) -> AttributedString {
         return AttributedString(title, attributes: .init([.font: UIFont.systemFont(ofSize: 13, weight: .regular)]))
     }
@@ -411,7 +402,20 @@ class ViewController: UIViewController {
             $0.horizontalEdges.equalToSuperview()
             $0.bottom.equalToSuperview()
         }
-        
     }
-
+    
+    private func layoutMoreButton() {
+        // moreButton Layout 구성
+        moreButton!.snp.makeConstraints {
+            $0.top.equalTo(summaryVStackView.snp.bottom).offset(8)
+            $0.trailing.equalToSuperview().offset(5)
+        }
+        
+        // moreButton 하단에 chaptersVStackView Layout 구성
+        chaptersVStackView.snp.makeConstraints {
+            $0.top.equalTo(moreButton!.snp.bottom).offset(24)
+            $0.horizontalEdges.equalToSuperview()
+            $0.bottom.equalToSuperview()
+        }
+    }
 }
