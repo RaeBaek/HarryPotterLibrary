@@ -32,4 +32,19 @@ enum Constants {
         static let summary = "Summary"
         static let chapters = "Chapters"
     }
+    
+    enum Summary {
+        static let maxLength = 450
+    }
+    
+    enum ButtonTitle {
+        static let more = "더 보기"
+        static let less = "접기"
+    }
+    
+    enum Alert {
+        static let confirm = "확인"
+        static let cancel = "취소"
+        static let retryMessage = "다시 시도해 주세요."
+    }
 }

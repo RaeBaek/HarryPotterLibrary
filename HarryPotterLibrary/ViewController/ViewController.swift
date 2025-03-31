@@ -67,7 +67,7 @@ class ViewController: UIViewController {
     let authorHStackView = CustomHStackView()
     
     let authorLabel = CustomUILabel(frame: .zero, size: 16, weight: .bold, text: Constants.Title.author, textColor: .black)
-    let authoreNameLabel = CustomUILabel(frame: .zero, size: 18, weight: .regular, text: nil, textColor: .darkGray)
+    let authorNameLabel = CustomUILabel(frame: .zero, size: 18, weight: .regular, text: nil, textColor: .darkGray)
     
     // 출간일 HStackView
     let releaseHStackView = CustomHStackView()
@@ -113,7 +113,7 @@ class ViewController: UIViewController {
     
     let dataService = DataService()
     var harryPoterLibrary: [Book] = []
-    var userDefaultManager = UserDefaultManager.shared
+    var userDefaultsManager = UserDefaultsManager.shared
     
     // 이전 선택된 버튼을 추적할 변수
     private var previousSelectedButton: UIButton?
@@ -123,78 +123,88 @@ class ViewController: UIViewController {
         
         configureView()
         setConstraints()
-        
-        fetchData()
-        
+        configureUserDefaults()
+        fetchBookData()
+        setSeriesButton()
     }
     
-    private func fetchData() {
+    private func configureUserDefaults() {
+        // 최초 실행 시, currentSeriesButtonIndex가 없다면 1로 설정
+        if userDefaultsManager.getCurrentSeriesButtonIndex() == 0 {
+            // 최초 실행 시 1로 설정
+            userDefaultsManager.setCurrentSeriesButtonIndex(1)
+        }
+    }
+    
+    private func fetchData(completionHandler: @escaping ([Book]) -> ()) {
         dataService.loadBooks { [weak self] result in
             guard let self else { return }
             
             switch result {
             case .success(let data):
-                data.forEach {
-                    self.harryPoterLibrary.append($0)
-                }
+                completionHandler(data)
             case .failure(let error):
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                     self.showAlert(error.rawValue)
                 }
             }
         }
-        
-        // 최초 실행 시, currentSeriesButtonIndex가 없다면 1로 설정
-        if UserDefaults.standard.value(forKey: "currentSeriesButtonIndex") == nil {
-            UserDefaults.standard.set(1, forKey: "currentSeriesButtonIndex")  // 최초 실행 시 1로 설정
-        }
-        
-        if let index = UserDefaults.standard.value(forKey: "currentSeriesButtonIndex") as? Int {
+    }
+    
+    private func fetchBookData() {
+        fetchData { [weak self] data in
+            guard let self else { return }
+            self.harryPoterLibrary = data
+            
+            let index = userDefaultsManager.getCurrentSeriesButtonIndex()
             setPageInfo(index)
         }
-        
-        setSeriesButton()
     }
     
     private func setPageInfo(_ index: Int) {
         let libraryIndex = index - 1
+        let currentBook = harryPoterLibrary[libraryIndex]
         
-        titleLabel.text = harryPoterLibrary[libraryIndex].title
+        updateBookInfoView(with: currentBook, index: index)
+        updateMoreButton(for: currentBook, index: index)
+        updateChapters(libraryIndex)
+    }
+    
+    private func updateBookInfoView(with book: Book, index: Int) {
+        titleLabel.text = book.title
         coverImage.image = UIImage(named: "harrypotter\(index)") //Constants.Image.harrypotter1
-        bookTitleLabel.text = harryPoterLibrary[libraryIndex].title
+        bookTitleLabel.text = book.title
         
-        authoreNameLabel.text = harryPoterLibrary[libraryIndex].author
-        releasedDateLabel.text = harryPoterLibrary[libraryIndex].releaseDate
-        pageNumberLabel.text = "\(harryPoterLibrary[libraryIndex].pages)"
+        authorNameLabel.text = book.author
+        releasedDateLabel.text = book.releaseDate
+        pageNumberLabel.text = "\(book.pages)"
         
-        dedicationContentLabel.text = harryPoterLibrary[libraryIndex].dedication
+        dedicationContentLabel.text = book.dedication
         
-        let (bool, string) = checkedCharacters(index, harryPoterLibrary[libraryIndex].summary)
+        let string = checkedCharacters(index, book.summary)
         summaryContentLabel.text = string
-        
+    }
+    
+    private func updateMoreButton(for book: Book, index: Int) {
         // moreButton의 제약조건을 잡기 위해 기존의 chaptersVStackView 제약조건 제거
         moreButton?.removeFromSuperview()
         chaptersVStackView.snp.removeConstraints()
         
-        if bool {
+        if book.summary.count > 450 {
             setMoreButton(index)
         } else {
             setConstraints()
         }
-        
-        updateChapters(libraryIndex)
     }
     
     // 시리즈 버튼 설정
     private func setSeriesButton() {
-        if let index = UserDefaults.standard.value(forKey: "currentSeriesButtonIndex") as? Int {
+        if let index = UserDefaults.standard.value(forKey: UserDefaultsKey.currentSeriesButtonIndex) as? Int {
             for i in 1...harryPoterLibrary.count {
                 let seriesButton = SeriesButton(frame: .zero, title: "\(i)", size: 16)
                 
                 if i == index {
-                    seriesButton.configuration?.baseForegroundColor = .white
-                    seriesButton.configuration?.baseBackgroundColor = .systemBlue
-                    
+                    applySelectedStyle(to: seriesButton)
                     previousSelectedButton = seriesButton
                 }
                 
@@ -214,30 +224,42 @@ class ViewController: UIViewController {
     @objc private func seriesButtonTapped(_ sender: UIButton) {
         // 이전 버튼이 있는 경우, 색상 리셋
         if let previousSelectedButton {
-            previousSelectedButton.configuration?.baseForegroundColor = .systemBlue
-            previousSelectedButton.configuration?.baseBackgroundColor = .systemGray5
+            applyUnselectedStyle(to: previousSelectedButton)
         }
-        
-        sender.configuration?.baseForegroundColor = .white
-        sender.configuration?.baseBackgroundColor = .systemBlue
+        applySelectedStyle(to: sender)
         
         previousSelectedButton = sender
         
-        UserDefaults.standard.set(sender.tag, forKey: "currentSeriesButtonIndex")
+        UserDefaults.standard.set(sender.tag, forKey: UserDefaultsKey.currentSeriesButtonIndex)
         
         setPageInfo(sender.tag)
     }
     
-    // 챕터 스택 뷰 내용 업데이트
+    private func applySelectedStyle(to button: UIButton) {
+        button.configuration?.baseForegroundColor = .white
+        button.configuration?.baseBackgroundColor = .systemBlue
+    }
+    
+    private func applyUnselectedStyle(to button: UIButton) {
+        button.configuration?.baseForegroundColor = .systemBlue
+        button.configuration?.baseBackgroundColor = .systemGray5
+    }
+    
+    // 챕터 스택 뷰 내용 업데이트 (삭제, 추가)
     private func updateChapters(_ index: Int) {
-        // 기존 뷰 제거
+        clearChapters()
+        addChapters(from: harryPoterLibrary[index])
+    }
+    
+    private func clearChapters() {
         chaptersContentVStackView.arrangedSubviews.forEach {
             chaptersContentVStackView.removeArrangedSubview($0)
             $0.removeFromSuperview()
         }
-        
-        // 새 챕터 추가
-        for chapter in harryPoterLibrary[index].chapters {
+    }
+    
+    private func addChapters(from book: Book) {
+        for chapter in book.chapters {
             let chapterLabel = UILabel()
             chapterLabel.text = chapter.title
             chapterLabel.font = .systemFont(ofSize: 14, weight: .regular)
@@ -248,30 +270,28 @@ class ViewController: UIViewController {
     }
     
     // 요약문이 450자 이상, 미만인지 먼저 체크
-    private func checkedCharacters(_ index: Int, _ originalText: String) -> (Bool, String) {
+    private func checkedCharacters(_ index: Int, _ originalText: String) -> String {
         let maxCharacters = 450
         
         if originalText.count > maxCharacters {
-            if UserDefaults.standard.bool(forKey: "moreButtonEnable_\(index)") {
-                return (true, originalText)
+            if userDefaultsManager.getMoreButtonEnable(index) {
+                return originalText
             } else {
-                return (true, String(originalText.prefix(maxCharacters)) + "...")
+                return String(originalText.prefix(maxCharacters)) + "..."
             }
         } else {
-            return (false, originalText)
+            return originalText
         }
     }
     
     // 더보기 버튼 설정
     private func setMoreButton(_ index: Int) {
         var config = UIButton.Configuration.plain()
-        config.contentInsets = NSDirectionalEdgeInsets(top: 5, leading: 5, bottom: 5, trailing: 5)
+        let status = userDefaultsManager.getMoreButtonEnable(index)
+        let title = status ? Constants.ButtonTitle.less : Constants.ButtonTitle.more
         
-        if UserDefaults.standard.bool(forKey: "moreButtonEnable_\(index)") {
-            config.attributedTitle = AttributedString("접기", attributes: .init([.font: UIFont.systemFont(ofSize: 13, weight: .regular)]))
-        } else {
-            config.attributedTitle = AttributedString("더 보기", attributes: .init([.font: UIFont.systemFont(ofSize: 13, weight: .regular)]))
-        }
+        config.attributedTitle = setAttributedTitle(title: title)
+        config.contentInsets = NSDirectionalEdgeInsets(top: 5, leading: 5, bottom: 5, trailing: 5)
         
         moreButton = UIButton(configuration: config)
         moreButton?.tag = index
@@ -291,29 +311,30 @@ class ViewController: UIViewController {
             $0.horizontalEdges.equalToSuperview()
             $0.bottom.equalToSuperview()
         }
-        
     }
     
     // 더 보기, 접기 상황에 맞게 버튼 title과 summaryContentLabel text 수정
     @objc private func moreButtonTapped(_ sender: UIButton) {
         let index = sender.tag
+        let status = userDefaultsManager.getMoreButtonEnable(index)
         
-        if UserDefaults.standard.bool(forKey: "moreButtonEnable_\(index)") {
-            UserDefaults.standard.set(false, forKey: "moreButtonEnable_\(index)")
-            moreButton?.configuration?.attributedTitle = AttributedString("더 보기", attributes: .init([.font: UIFont.systemFont(ofSize: 13, weight: .regular)]))
-        } else {
-            UserDefaults.standard.set(true, forKey: "moreButtonEnable_\(index)")
-            moreButton?.configuration?.attributedTitle = AttributedString("접기", attributes: .init([.font: UIFont.systemFont(ofSize: 13, weight: .regular)]))
-        }
+        userDefaultsManager.setMoreButtonEnable(index, !status)
         
-        summaryContentLabel.text = checkedCharacters(index, harryPoterLibrary[index - 1].summary).1
+        let title = !status ? Constants.ButtonTitle.less : Constants.ButtonTitle.more
+        sender.configuration?.attributedTitle = setAttributedTitle(title: title)
+        
+        summaryContentLabel.text = checkedCharacters(index, harryPoterLibrary[index - 1].summary)
+    }
+    
+    private func setAttributedTitle(title: String) -> AttributedString {
+        return AttributedString(title, attributes: .init([.font: UIFont.systemFont(ofSize: 13, weight: .regular)]))
     }
     
     // 알림 보여주기
     private func showAlert(_ title: String) {
-        let alert = UIAlertController(title: title, message: "다시 시도해 주세요.", preferredStyle: .alert)
-        let okAction = UIAlertAction(title: "확인", style: .default)
-        let cancelAction = UIAlertAction(title: "취소", style: .cancel)
+        let alert = UIAlertController(title: title, message: Constants.Alert.retryMessage, preferredStyle: .alert)
+        let okAction = UIAlertAction(title: Constants.Alert.confirm, style: .default)
+        let cancelAction = UIAlertAction(title: Constants.Alert.cancel, style: .cancel)
         
         alert.addAction(okAction)
         alert.addAction(cancelAction)
@@ -324,46 +345,19 @@ class ViewController: UIViewController {
     private func configureView() {
         view.backgroundColor = .systemBackground
         
-        [titleLabel, seriesHStackView, seriesScrollView].forEach {
-            view.addSubview($0)
-        }
+        view.addSubviews(titleLabel, seriesHStackView, seriesScrollView)
         
-        [topHStackView, dedicationVStackView, summaryVStackView, chaptersVStackView].forEach {
-            seriesScrollView.addSubview($0)
-        }
+        seriesScrollView.addSubviews(topHStackView, dedicationVStackView, summaryVStackView, chaptersVStackView)
         
-        [authorLabel, authoreNameLabel].forEach {
-            authorHStackView.addArrangedSubview($0)
-        }
+        authorHStackView.addArrangedSubviews(authorLabel, authorNameLabel)
+        releaseHStackView.addArrangedSubviews(releasedLabel, releasedDateLabel)
+        pageHStackView.addArrangedSubviews(pageLabel, pageNumberLabel)
+        bookInfoVStack.addArrangedSubviews(bookTitleLabel, authorHStackView, releaseHStackView, pageHStackView)
         
-        [releasedLabel, releasedDateLabel].forEach {
-            releaseHStackView.addArrangedSubview($0)
-        }
-        
-        [pageLabel, pageNumberLabel].forEach {
-            pageHStackView.addArrangedSubview($0)
-        }
-        
-        [bookTitleLabel, authorHStackView, releaseHStackView, pageHStackView].forEach {
-            bookInfoVStack.addArrangedSubview($0)
-        }
-        
-        [coverImage, bookInfoVStack].forEach {
-            topHStackView.addArrangedSubview($0)
-        }
-        
-        [dedicationLabel, dedicationContentLabel].forEach {
-            dedicationVStackView.addArrangedSubview($0)
-        }
-        
-        [summaryLabel, summaryContentLabel].forEach {
-            summaryVStackView.addArrangedSubview($0)
-        }
-        
-        [chaptersLabel, chaptersContentVStackView].forEach {
-            chaptersVStackView.addArrangedSubview($0)
-        }
-        
+        topHStackView.addArrangedSubviews(coverImage, bookInfoVStack)
+        dedicationVStackView.addArrangedSubviews(dedicationLabel, dedicationContentLabel)
+        summaryVStackView.addArrangedSubviews(summaryLabel, summaryContentLabel)
+        chaptersVStackView.addArrangedSubviews(chaptersLabel, chaptersContentVStackView)
     }
     
     private func setConstraints() {

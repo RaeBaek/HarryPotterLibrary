@@ -23,6 +23,8 @@
 		14AB45DF2D9A3C3700AEF07C /* CustomHStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14AB45DE2D9A3C3700AEF07C /* CustomHStackView.swift */; };
 		14AB45E12D9A3EA200AEF07C /* CustomUILabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14AB45E02D9A3EA200AEF07C /* CustomUILabel.swift */; };
 		14AB45E32D9A4F4500AEF07C /* CustomVStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14AB45E22D9A4F4500AEF07C /* CustomVStackView.swift */; };
+		14AB45E92D9A636400AEF07C /* Extension+UIStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14AB45E82D9A636400AEF07C /* Extension+UIStackView.swift */; };
+		14AB45EB2D9A64A900AEF07C /* Extension+UIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14AB45EA2D9A64A900AEF07C /* Extension+UIView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -43,6 +45,8 @@
 		14AB45DE2D9A3C3700AEF07C /* CustomHStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomHStackView.swift; sourceTree = "<group>"; };
 		14AB45E02D9A3EA200AEF07C /* CustomUILabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomUILabel.swift; sourceTree = "<group>"; };
 		14AB45E22D9A4F4500AEF07C /* CustomVStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomVStackView.swift; sourceTree = "<group>"; };
+		14AB45E82D9A636400AEF07C /* Extension+UIStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension+UIStackView.swift"; sourceTree = "<group>"; };
+		14AB45EA2D9A64A900AEF07C /* Extension+UIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension+UIView.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -76,15 +80,13 @@
 		14AB45B32D912FCC00AEF07C /* HarryPotterLibrary */ = {
 			isa = PBXGroup;
 			children = (
-				14AB45D72D953B6D00AEF07C /* CustomView */,
-				14AB45DA2D9680A600AEF07C /* UserDefaultManager.swift */,
 				14AB45A92D912FCC00AEF07C /* AppDelegate.swift */,
 				14AB45B12D912FCC00AEF07C /* SceneDelegate.swift */,
-				14AB45B22D912FCC00AEF07C /* ViewController.swift */,
-				14AB45BF2D9140EF00AEF07C /* DataService.swift */,
-				14AB45C12D91427B00AEF07C /* Response.swift */,
-				14AB45C32D91428A00AEF07C /* Error.swift */,
-				14AB45CB2D93EEED00AEF07C /* Constants.swift */,
+				14AB45DA2D9680A600AEF07C /* UserDefaultManager.swift */,
+				14AB45E42D9A595200AEF07C /* Model */,
+				14AB45E62D9A598300AEF07C /* View */,
+				14AB45E52D9A597000AEF07C /* ViewController */,
+				14AB45E72D9A634F00AEF07C /* Extension */,
 				14AB45AA2D912FCC00AEF07C /* Assets.xcassets */,
 				14AB45AB2D912FCC00AEF07C /* data.json */,
 				14AB45AC2D912FCC00AEF07C /* Info.plist */,
@@ -102,6 +104,42 @@
 				14AB45E22D9A4F4500AEF07C /* CustomVStackView.swift */,
 			);
 			path = CustomView;
+			sourceTree = "<group>";
+		};
+		14AB45E42D9A595200AEF07C /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				14AB45BF2D9140EF00AEF07C /* DataService.swift */,
+				14AB45C12D91427B00AEF07C /* Response.swift */,
+				14AB45C32D91428A00AEF07C /* Error.swift */,
+				14AB45CB2D93EEED00AEF07C /* Constants.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		14AB45E52D9A597000AEF07C /* ViewController */ = {
+			isa = PBXGroup;
+			children = (
+				14AB45B22D912FCC00AEF07C /* ViewController.swift */,
+			);
+			path = ViewController;
+			sourceTree = "<group>";
+		};
+		14AB45E62D9A598300AEF07C /* View */ = {
+			isa = PBXGroup;
+			children = (
+				14AB45D72D953B6D00AEF07C /* CustomView */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		14AB45E72D9A634F00AEF07C /* Extension */ = {
+			isa = PBXGroup;
+			children = (
+				14AB45E82D9A636400AEF07C /* Extension+UIStackView.swift */,
+				14AB45EA2D9A64A900AEF07C /* Extension+UIView.swift */,
+			);
+			path = Extension;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -182,7 +220,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				14AB45EB2D9A64A900AEF07C /* Extension+UIView.swift in Sources */,
 				14AB45E12D9A3EA200AEF07C /* CustomUILabel.swift in Sources */,
+				14AB45E92D9A636400AEF07C /* Extension+UIStackView.swift in Sources */,
 				14AB45B42D912FCC00AEF07C /* AppDelegate.swift in Sources */,
 				14AB45B52D912FCC00AEF07C /* SceneDelegate.swift in Sources */,
 				14AB45B62D912FCC00AEF07C /* ViewController.swift in Sources */,

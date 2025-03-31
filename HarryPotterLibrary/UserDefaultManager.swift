@@ -7,20 +7,33 @@
 
 import Foundation
 
-class UserDefaultManager {
-    static let shared = UserDefaultManager()
+enum UserDefaultsKey {
+    static let currentSeriesButtonIndex = "currentSeriesButtonIndex"
+    static func moreButtonEnableKey(_ index: Int) -> String {
+        return "moreButtonEnable_\(index)"
+    }
+}
+
+final class UserDefaultsManager {
+    static let shared = UserDefaultsManager()
+    private let defaults = UserDefaults.standard
     
     private init() {}
     
-    var currentSeriesButtonIndex: Void {
-        didSet {
-            
-        }
-        
-        willSet(newValue) {
-            UserDefaults.standard.set(newValue, forKey: "currentSeriesButtonIndex")
-        }
-        
+    func getCurrentSeriesButtonIndex() -> Int {
+        return defaults.integer(forKey: UserDefaultsKey.currentSeriesButtonIndex)
     }
-        
+    
+    func setCurrentSeriesButtonIndex(_ index: Int) {
+        defaults.set(index, forKey: UserDefaultsKey.currentSeriesButtonIndex)
+    }
+    
+    func getMoreButtonEnable(_ index: Int) -> Bool {
+        return defaults.bool(forKey: UserDefaultsKey.moreButtonEnableKey(index))
+    }
+    
+    func setMoreButtonEnable(_ index: Int, _ enable: Bool) {
+        defaults.set(enable, forKey: UserDefaultsKey.moreButtonEnableKey(index))
+    }
+    
 }
