@@ -54,13 +54,7 @@ class ViewController: UIViewController {
     }()
     
     // 우측 책 정보 VStackView
-    let bookInfoVStack = {
-        let view = UIStackView()
-        view.axis = .vertical
-        view.spacing = 8
-        view.alignment = .leading
-        return view
-    }()
+    let bookInfoVStack = CustomVStackView()
     
     let bookTitleLabel = {
         let view = UILabel()
@@ -70,123 +64,39 @@ class ViewController: UIViewController {
     }()
     
     // 저자 HStackView
-    let authorHStackView = {
-        let view = UIStackView()
-        view.axis = .horizontal
-        view.spacing = 8
-        view.alignment = .leading
-        return view
-    }()
+    let authorHStackView = CustomHStackView()
     
-    let authorLabel = {
-        let view = UILabel()
-        view.font = .systemFont(ofSize: 16, weight: .bold)
-        view.text = Constants.Title.author
-        view.textColor = .black
-        return view
-    }()
-    
-    let authoreNameLabel = {
-        let view = UILabel()
-        view.font = .systemFont(ofSize: 18, weight: .regular)
-        view.textColor = .darkGray
-        return view
-    }()
+    let authorLabel = CustomUILabel(frame: .zero, size: 16, weight: .bold, text: Constants.Title.author, textColor: .black)
+    let authoreNameLabel = CustomUILabel(frame: .zero, size: 18, weight: .regular, text: nil, textColor: .darkGray)
     
     // 출간일 HStackView
-    let releaseHStackView = {
-        let view = UIStackView()
-        view.axis = .horizontal
-        view.spacing = 8
-        view.alignment = .leading
-        return view
-    }()
+    let releaseHStackView = CustomHStackView()
     
-    let releasedLabel = {
-        let view = UILabel()
-        view.font = .systemFont(ofSize: 14, weight: .bold)
-        view.text = Constants.Title.released
-        view.textColor = .black
-        return view
-    }()
-    
-    let releasedDateLabel = {
-        let view = UILabel()
-        view.font = .systemFont(ofSize: 14, weight: .bold)
-        view.textColor = .gray
-        return view
-    }()
+    let releasedLabel = CustomUILabel(frame: .zero, size: 14, weight: .bold, text: Constants.Title.released, textColor: .black)
+    let releasedDateLabel = CustomUILabel(frame: .zero, size: 14, weight: .bold, text: nil, textColor: .gray)
     
     // 페이지 HStackView
-    let pageHStackView = {
-        let view = UIStackView()
-        view.axis = .horizontal
-        view.spacing = 8
-        view.alignment = .leading
-        return view
-    }()
+    let pageHStackView = CustomHStackView()
     
-    let pageLabel = {
-        let view = UILabel()
-        view.font = .systemFont(ofSize: 14, weight: .bold)
-        view.text = Constants.Title.page
-        view.textColor = .black
-        return view
-    }()
-    
-    let pageNumberLabel = {
-        let view = UILabel()
-        view.font = .systemFont(ofSize: 14, weight: .regular)
-        view.textColor = .gray
-        return view
-    }()
+    let pageLabel = CustomUILabel(frame: .zero, size: 14, weight: .bold, text: nil, textColor: .black)
+    let pageNumberLabel = CustomUILabel(frame: .zero, size: 14, weight: .regular, text: nil, textColor: .gray)
     
     // 헌정사 VStackView
-    let dedicationVStackView = {
-        let view = UIStackView()
-        view.axis = .vertical
-        view.spacing = 8
-        view.alignment = .leading
-        return view
-    }()
+    let dedicationVStackView = CustomVStackView()
     
-    let dedicationLabel = {
-        let view = UILabel()
-        view.font = .systemFont(ofSize: 18, weight: .bold)
-        view.text = Constants.Title.dedication
-        view.textColor = .black
-        return view
-    }()
-    
+    let dedicationLabel = CustomUILabel(frame: .zero, size: 18, weight: .bold, text: Constants.Title.dedication, textColor: .black)
     let dedicationContentLabel = {
-        let view = UILabel()
-        view.font = .systemFont(ofSize: 14, weight: .regular)
-        view.textColor = .darkGray
+        let view = CustomUILabel(frame: .zero, size: 14, weight: .regular, text: nil, textColor: .darkGray)
         view.numberOfLines = 0
         return view
     }()
-    
+        
     // 요약 VStackView
-    let summaryVStackView = {
-        let view = UIStackView()
-        view.axis = .vertical
-        view.spacing = 8
-        view.alignment = .leading
-        return view
-    }()
+    let summaryVStackView = CustomVStackView()
     
-    let summaryLabel = {
-        let view = UILabel()
-        view.font = .systemFont(ofSize: 18, weight: .bold)
-        view.text = Constants.Title.summary
-        view.textColor = .black
-        return view
-    }()
-    
+    let summaryLabel = CustomUILabel(frame: .zero, size: 18, weight: .bold, text: Constants.Title.summary, textColor: .black)
     let summaryContentLabel = {
-        let view = UILabel()
-        view.font = .systemFont(ofSize: 14, weight: .regular)
-        view.textColor = .darkGray
+        let view = CustomUILabel(frame: .zero, size: 14, weight: .regular, text: nil, textColor: .darkGray)
         view.numberOfLines = 0
         return view
     }()
@@ -195,29 +105,11 @@ class ViewController: UIViewController {
     var moreButton: UIButton?
     
     // 챕터 VStackView
-    let chaptersVStackView = {
-        let view = UIStackView()
-        view.axis = .vertical
-        view.spacing = 8
-        view.alignment = .leading
-        return view
-    }()
+    let chaptersVStackView = CustomVStackView()
     
-    let chaptersLabel = {
-        let view = UILabel()
-        view.font = .systemFont(ofSize: 18, weight: .bold)
-        view.text = Constants.Title.chapters
-        view.textColor = .black
-        return view
-    }()
+    let chaptersLabel = CustomUILabel(frame: .zero, size: 18, weight: .bold, text: Constants.Title.chapters, textColor: .black)
     
-    let chaptersContentVStackView = {
-        let view = UIStackView()
-        view.axis = .vertical
-        view.spacing = 8
-        view.alignment = .leading
-        return view
-    }()
+    let chaptersContentVStackView = CustomVStackView()
     
     let dataService = DataService()
     var harryPoterLibrary: [Book] = []
