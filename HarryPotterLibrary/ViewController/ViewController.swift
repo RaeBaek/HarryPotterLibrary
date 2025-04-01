@@ -10,7 +10,6 @@ import UIKit
 import SnapKit
 
 class ViewController: UIViewController {
-    
     // 대제목
     let titleLabel = {
         let view = UILabel()

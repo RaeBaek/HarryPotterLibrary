@@ -8,7 +8,6 @@
 import UIKit
 
 class SeriesButton: UIButton {
-    
     let title: String
     let size: CGFloat
     

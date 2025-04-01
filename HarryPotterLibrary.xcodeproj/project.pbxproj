@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		1417E92D2D9BC528005FA8DE /* Extension+UIButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1417E92C2D9BC528005FA8DE /* Extension+UIButton.swift */; };
+		1417E92F2D9BCC3F005FA8DE /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 1417E92E2D9BCC3F005FA8DE /* README.md */; };
 		14AB45B42D912FCC00AEF07C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14AB45A92D912FCC00AEF07C /* AppDelegate.swift */; };
 		14AB45B52D912FCC00AEF07C /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14AB45B12D912FCC00AEF07C /* SceneDelegate.swift */; };
 		14AB45B62D912FCC00AEF07C /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14AB45B22D912FCC00AEF07C /* ViewController.swift */; };
@@ -31,6 +32,7 @@
 
 /* Begin PBXFileReference section */
 		1417E92C2D9BC528005FA8DE /* Extension+UIButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension+UIButton.swift"; sourceTree = "<group>"; };
+		1417E92E2D9BCC3F005FA8DE /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		14AB456D2D912AD000AEF07C /* HarryPotterLibrary.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HarryPotterLibrary.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		14AB45A92D912FCC00AEF07C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		14AB45AA2D912FCC00AEF07C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -68,6 +70,7 @@
 		14AB45642D912AD000AEF07C = {
 			isa = PBXGroup;
 			children = (
+				1417E92E2D9BCC3F005FA8DE /* README.md */,
 				14AB45B32D912FCC00AEF07C /* HarryPotterLibrary */,
 				14AB456E2D912AD000AEF07C /* Products */,
 			);
@@ -125,7 +128,6 @@
 			isa = PBXGroup;
 			children = (
 				14AB45B22D912FCC00AEF07C /* ViewController.swift */,
-				1417E92C2D9BC528005FA8DE /* Extension+UIButton.swift */,
 			);
 			path = ViewController;
 			sourceTree = "<group>";
@@ -141,9 +143,10 @@
 		14AB45E72D9A634F00AEF07C /* Extension */ = {
 			isa = PBXGroup;
 			children = (
-				14AB45E82D9A636400AEF07C /* Extension+UIStackView.swift */,
-				14AB45EA2D9A64A900AEF07C /* Extension+UIView.swift */,
 				14AB45EC2D9AA13A00AEF07C /* Extension+String.swift */,
+				14AB45EA2D9A64A900AEF07C /* Extension+UIView.swift */,
+				14AB45E82D9A636400AEF07C /* Extension+UIStackView.swift */,
+				1417E92C2D9BC528005FA8DE /* Extension+UIButton.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -215,6 +218,7 @@
 			files = (
 				14AB45B72D912FCC00AEF07C /* Assets.xcassets in Resources */,
 				14AB45B82D912FCC00AEF07C /* data.json in Resources */,
+				1417E92F2D9BCC3F005FA8DE /* README.md in Resources */,
 				14AB45BA2D912FCC00AEF07C /* LaunchScreen.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -9,12 +9,12 @@ import Foundation
 
 // MARK: - BookResponse
 struct BookResponse: Decodable {
-    let data: [attribute]
+    let data: [Attribute]
 }
 
-// MARK: - Datum
-struct attribute: Decodable {
-    let attributes: Book
+// MARK: - attribute
+struct Attribute: Decodable {
+    let attribute: Book
 }
 
 // MARK: - Attributes
