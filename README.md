@@ -5,6 +5,15 @@
 
 ---
 
+## 📸 화면 미리보기
+
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/784c1efd-e3ca-4374-b4ed-dfb4dcdaba50" width="79.5%" />
+  <img src="https://github.com/user-attachments/assets/3ff1735d-4fb2-4819-b430-49c36ddcb08f" width="20%" />
+</p>
+
+---
+
 ## 🗓 프로젝트 일정
 
 - **시작일:** 2025년 3월 24일
@@ -93,11 +102,5 @@ HarryPotterLibrary
 
 - **문제**: 시리즈 버튼의 스타일 설정(`applySelectedStyle`, `applyUnselectedStyle`)을 ViewController에서 메서드로 정의하여 관리함 
 - **해결**: UIButton의 Extension 파일을 통해 스타일 관련 메서드를 확장자로 분리
-
----
-
-## 📸 화면 미리보기
-
-(스크린샷 또는 시연 GIF가 있다면 여기에 추가)
 
 ---
