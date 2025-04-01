@@ -13,6 +13,7 @@
 ---
 
 ## 📂 폴더 구조
+```
 HarryPotterLibrary
 ├── Model                           // 데이터 모델과 서비스
 │   ├── Response.swift              // API 응답 모델
@@ -39,6 +40,7 @@ HarryPotterLibrary
 ├── AppDelegate.swift
 ├── SceneDelegate.swift
 └── data.json                       // 시리즈별 도서 정보
+```
 
 ---
 
