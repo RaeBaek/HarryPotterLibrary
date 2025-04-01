@@ -8,8 +8,8 @@
 ## 📸 화면 미리보기
 
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/784c1efd-e3ca-4374-b4ed-dfb4dcdaba50" width="79.5%" />
-  <img src="https://github.com/user-attachments/assets/3ff1735d-4fb2-4819-b430-49c36ddcb08f" width="20%" />
+  <img src="https://github.com/user-attachments/assets/784c1efd-e3ca-4374-b4ed-dfb4dcdaba50" width="79%" />
+  <img src="https://github.com/user-attachments/assets/3ff1735d-4fb2-4819-b430-49c36ddcb08f" width="19.9%" />
 </p>
 
 ---
