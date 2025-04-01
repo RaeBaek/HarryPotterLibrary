@@ -13,5 +13,5 @@ enum DataError: String, Error {
 }
 
 enum ButtonError: String {
-    case findNotButton = "버튼을 찾을 수 없습니다."
+    case findNotButton = "더 보기 버튼을 찾을 수 없습니다."
 }

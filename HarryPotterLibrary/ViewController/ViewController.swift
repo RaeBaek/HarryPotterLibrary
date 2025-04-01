@@ -415,15 +415,20 @@ class ViewController: UIViewController {
     }
     
     private func layoutMoreButton() {
+        guard let moreButton else {
+            showAlert(ButtonError.findNotButton.rawValue)
+            return
+        }
+        
         // moreButton Layout 구성
-        moreButton!.snp.makeConstraints {
+        moreButton.snp.makeConstraints {
             $0.top.equalTo(summaryVStackView.snp.bottom).offset(8)
             $0.trailing.equalToSuperview().offset(5)
         }
         
         // moreButton 하단에 chaptersVStackView Layout 구성
         chaptersVStackView.snp.makeConstraints {
-            $0.top.equalTo(moreButton!.snp.bottom).offset(24)
+            $0.top.equalTo(moreButton.snp.bottom).offset(24)
             $0.horizontalEdges.equalToSuperview()
             $0.bottom.equalToSuperview().offset(-16)
         }

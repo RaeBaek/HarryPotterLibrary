@@ -14,7 +14,7 @@ struct BookResponse: Decodable {
 
 // MARK: - attribute
 struct Attribute: Decodable {
-    let attribute: Book
+    let attributes: Book
 }
 
 // MARK: - Attributes
