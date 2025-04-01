@@ -123,7 +123,7 @@ class ViewController: UIViewController {
     
     init(dataService: DataService = DataService()) {
         self.dataService = dataService
-        super.init()
+        super.init(nibName: nil, bundle: nil)
     }
     
     required init?(coder: NSCoder) {
@@ -136,40 +136,33 @@ class ViewController: UIViewController {
         configureView()
         setConstraints()
         configureUserDefaults()
-        fetchBookData()
+        
+        fetchData()
         setSeriesButton()
     }
     
     private func configureUserDefaults() {
-        // 최초 실행 시, currentSeriesButtonIndex가 없다면 1로 설정
+        // 앱 최초 실행 시 값이 0 이므로
         if userDefaultsManager.getCurrentSeriesButtonIndex() == 0 {
-            // 최초 실행 시 1로 설정
+            // 1로 설정
             userDefaultsManager.setCurrentSeriesButtonIndex(1)
         }
     }
     
-    private func fetchData(completionHandler: @escaping ([Book]) -> ()) {
+    private func fetchData() {
         dataService.loadBooks { [weak self] result in
             guard let self else { return }
             
             switch result {
             case .success(let data):
-                completionHandler(data)
+                self.harryPoterLibrary = data
+                self.setPageInfo(userDefaultsManager.getCurrentSeriesButtonIndex())
+                
             case .failure(let error):
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                     self.showAlert(error.rawValue)
                 }
             }
-        }
-    }
-    
-    private func fetchBookData() {
-        fetchData { [weak self] data in
-            guard let self else { return }
-            self.harryPoterLibrary = data
-            
-            let index = userDefaultsManager.getCurrentSeriesButtonIndex()
-            setPageInfo(index)
         }
     }
     
@@ -209,54 +202,44 @@ class ViewController: UIViewController {
         }
     }
     
+    private func makeSeriesButton(index: Int) -> UIButton {
+        let button = SeriesButton(frame: .zero, title: "\(index)", size: 16)
+        button.tag = index
+        button.addTarget(self, action: #selector(seriesButtonTapped(_:)), for: .touchUpInside)
+        
+        if index == userDefaultsManager.getCurrentSeriesButtonIndex() {
+            button.applySelectedStyle()
+            previousSelectedButton = button
+        }
+        return button
+    }
+    
     // 시리즈 버튼 설정
     private func setSeriesButton() {
-        if let index = UserDefaults.standard.value(forKey: UserDefaultsKey.currentSeriesButtonIndex) as? Int {
-            for i in 1...harryPoterLibrary.count {
-                let seriesButton = SeriesButton(frame: .zero, title: "\(i)", size: 16)
-                
-                if i == index {
-                    applySelectedStyle(to: seriesButton)
-                    previousSelectedButton = seriesButton
-                }
-                
-                seriesButton.tag = i
-                seriesButton.addTarget(self, action: #selector(seriesButtonTapped(_:)), for: .touchUpInside)
-                
-                seriesHStackView.addArrangedSubview(seriesButton)
-                seriesButton.snp.makeConstraints {
-                    $0.width.equalTo(seriesButton.snp.height)
-                }
+        for i in 1...harryPoterLibrary.count {
+            let seriesButton = makeSeriesButton(index: i)
+            
+            seriesHStackView.addArrangedSubview(seriesButton)
+            seriesButton.snp.makeConstraints {
+                $0.width.equalTo(seriesButton.snp.height)
             }
         }
-        
     }
     
     // 각각의 시리즈 버튼 클릭 시
     @objc private func seriesButtonTapped(_ sender: UIButton) {
         // 이전 버튼이 있는 경우, 색상 리셋
         if let previousSelectedButton {
-            applyUnselectedStyle(to: previousSelectedButton)
+            previousSelectedButton.applyUnselectedStyle()
         }
-        applySelectedStyle(to: sender)
         
+        sender.applySelectedStyle()
         previousSelectedButton = sender
         
-        UserDefaults.standard.set(sender.tag, forKey: UserDefaultsKey.currentSeriesButtonIndex)
-        
+        userDefaultsManager.setCurrentSeriesButtonIndex(sender.tag)
         setPageInfo(sender.tag)
         
         seriesScrollView.setContentOffset(.zero, animated: true)
-    }
-    
-    private func applySelectedStyle(to button: UIButton) {
-        button.configuration?.baseForegroundColor = .white
-        button.configuration?.baseBackgroundColor = .systemBlue
-    }
-    
-    private func applyUnselectedStyle(to button: UIButton) {
-        button.configuration?.baseForegroundColor = .systemBlue
-        button.configuration?.baseBackgroundColor = .systemGray5
     }
     
     // 챕터 스택 뷰 내용 업데이트
@@ -300,6 +283,18 @@ class ViewController: UIViewController {
     
     // 더보기 버튼 설정
     private func setMoreButton(_ index: Int) {
+        moreButton = makeMoreButton(index)
+        
+        guard let button = moreButton else {
+            showAlert(ButtonError.findNotButton.rawValue)
+            return
+        }
+        
+        contentView.addSubview(button)
+        layoutMoreButton()
+    }
+    
+    private func makeMoreButton(_ index: Int) -> UIButton {
         var config = UIButton.Configuration.plain()
         let status = userDefaultsManager.getMoreButtonEnable(index)
         let title = status ? Constants.ButtonTitle.less : Constants.ButtonTitle.more
@@ -307,12 +302,11 @@ class ViewController: UIViewController {
         config.attributedTitle = setAttributedTitle(title: title)
         config.contentInsets = NSDirectionalEdgeInsets(top: 5, leading: 5, bottom: 5, trailing: 5)
         
-        moreButton = UIButton(configuration: config)
-        moreButton?.tag = index
-        moreButton?.addTarget(self, action: #selector(moreButtonTapped), for: .touchUpInside)
+        let button = UIButton(configuration: config)
+        button.tag = index
+        button.addTarget(self, action: #selector(moreButtonTapped), for: .touchUpInside)
         
-        contentView.addSubview(moreButton!)
-        layoutMoreButton()
+        return button
     }
     
     // 더 보기, 접기 상황에 맞게 버튼 title과 summaryContentLabel text 수정
