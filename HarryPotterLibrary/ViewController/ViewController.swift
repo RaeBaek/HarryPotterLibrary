@@ -94,7 +94,11 @@ class ViewController: UIViewController {
     }()
         
     // 요약 VStackView
-    let summaryVStackView = CustomVStackView()
+    let summaryVStackView = {
+        let view = CustomVStackView()
+        view.alignment = .fill
+        return view
+    }()
     
     let summaryLabel = CustomUILabel(frame: .zero, size: 18, weight: .bold, text: Constants.Title.summary, textColor: .black)
     let summaryContentLabel = {
@@ -105,6 +109,7 @@ class ViewController: UIViewController {
     
     // 더보기, 접기 버튼
     var moreButton: UIButton?
+    let buttonContainer = UIView()
     
     // 챕터 VStackView
     let chaptersVStackView = CustomVStackView()
@@ -155,7 +160,7 @@ class ViewController: UIViewController {
             switch result {
             case .success(let data):
                 self.harryPoterLibrary = data
-                self.setPageInfo(userDefaultsManager.getCurrentSeriesButtonIndex())
+                self.updatePageInfo(userDefaultsManager.getCurrentSeriesButtonIndex())
                 
             case .failure(let error):
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
@@ -165,7 +170,7 @@ class ViewController: UIViewController {
         }
     }
     
-    private func setPageInfo(_ index: Int) {
+    private func updatePageInfo(_ index: Int) {
         let libraryIndex = index - 1
         let currentBook = harryPoterLibrary[libraryIndex]
         
@@ -190,15 +195,27 @@ class ViewController: UIViewController {
     }
     
     private func updateMoreButton(for book: Book, index: Int) {
-        // moreButton의 제약조건을 잡기 위해 기존의 chaptersVStackView 제약조건 제거
-        moreButton?.removeFromSuperview()
-        chaptersVStackView.snp.removeConstraints()
-        
-        if book.summary.count > Constants.Summary.maxLength {
-            setMoreButton(index)
-        } else {
-            setConstraints()
+        // 기존 chaptersContentVStackView에 더보기 버튼이 있었다면 삭제
+        if moreButton != nil {
+            summaryVStackView.removeArrangedSubview(buttonContainer)
+            buttonContainer.removeFromSuperview()
+            moreButton = nil
         }
+        
+        guard book.summary.count > Constants.Summary.maxLength else { return }
+        
+        let button = makeMoreButton(index)
+        self.moreButton = button
+        
+        buttonContainer.addSubview(button)
+        
+        button.snp.makeConstraints {
+            $0.top.bottom.equalToSuperview()
+            $0.trailing.equalToSuperview()
+            $0.leading.greaterThanOrEqualToSuperview()
+        }
+        
+        summaryVStackView.addArrangedSubviews(buttonContainer)
     }
     
     private func makeSeriesButton(index: Int) -> UIButton {
@@ -236,7 +253,7 @@ class ViewController: UIViewController {
         previousSelectedButton = sender
         
         userDefaultsManager.setCurrentSeriesButtonIndex(sender.tag)
-        setPageInfo(sender.tag)
+        updatePageInfo(sender.tag)
         
         seriesScrollView.setContentOffset(.zero, animated: true)
     }
@@ -278,19 +295,6 @@ class ViewController: UIViewController {
         } else {
             return originalText
         }
-    }
-    
-    // 더보기 버튼 설정
-    private func setMoreButton(_ index: Int) {
-        moreButton = makeMoreButton(index)
-        
-        guard let button = moreButton else {
-            showAlert(ButtonError.findNotButton.rawValue)
-            return
-        }
-        
-        contentView.addSubview(button)
-        layoutMoreButton()
     }
     
     private func makeMoreButton(_ index: Int) -> UIButton {
@@ -409,26 +413,6 @@ class ViewController: UIViewController {
         // 챕터 VStack Layout
         chaptersVStackView.snp.makeConstraints {
             $0.top.equalTo(summaryVStackView.snp.bottom).offset(24)
-            $0.horizontalEdges.equalToSuperview()
-            $0.bottom.equalToSuperview().offset(-16)
-        }
-    }
-    
-    private func layoutMoreButton() {
-        guard let moreButton else {
-            showAlert(ButtonError.findNotButton.rawValue)
-            return
-        }
-        
-        // moreButton Layout 구성
-        moreButton.snp.makeConstraints {
-            $0.top.equalTo(summaryVStackView.snp.bottom).offset(8)
-            $0.trailing.equalToSuperview().offset(5)
-        }
-        
-        // moreButton 하단에 chaptersVStackView Layout 구성
-        chaptersVStackView.snp.makeConstraints {
-            $0.top.equalTo(moreButton.snp.bottom).offset(24)
             $0.horizontalEdges.equalToSuperview()
             $0.bottom.equalToSuperview().offset(-16)
         }
