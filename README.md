@@ -107,8 +107,8 @@ HarryPotterLibrary
 
 ### 4. ✅ 더보기 버튼 View 구조가 비효율적이고 제약 설정이 복잡함
 
-- **문제**: 더보기 버튼을 summaryVStackView 외부에 단독으로 선언하고, 따로 addSubview()와 SnapKit을 이용해 제약을 설정하면서 코드가 길어지고 불필요한 레이아웃 처리 로직이 많아짐<br>버튼 유무에 따라 summary와 chapters 사이 레이아웃을 조건 분기해야 했고, 관리할 메서드도 늘어남
-- **원인**: 더보기 버튼을 summary와 같은 의미상의 영역에 두지 않고 외부에서 따로 다루면서 뷰 구조가 불필요하게 복잡해짐<br>이로 인해 ViewController 내의 setMoreButton, layoutMoreButton 등 불필요한 메서드 분리 발생
-- **해결**: 더보기 버튼을 summary 영역과 동일하게 보고 summaryVStackView 내부에 배치함으로써 구조를 단순화함<br>버튼을 감싸는 buttonContainer를 만들어 스택뷰에 추가하고, 내부 버튼은 SnapKit으로 우측 정렬만 설정함<br>결과적으로 setMoreButton, layoutMoreButton, updateMoreButton -> updateMoreButton 메서드 개수를 줄였으며 코드길이 또한 51줄에서 23줄로 대폭 줄일 수 있었음
+- **문제**: 더보기 버튼을 `summaryVStackView` 외부에 단독으로 선언하고, 따로 `addSubview()`와 `SnapKit`을 이용해 제약을 설정하면서 코드가 길어지고 불필요한 레이아웃 처리 로직이 많아짐<br>버튼 유무에 따라 `summary`와 `chapters` 사이 레이아웃을 조건 분기해야 했고, 관리할 메서드도 늘어남
+- **원인**: 더보기 버튼을 `summary`와 같은 의미상의 영역에 두지 않고 외부에서 따로 다루면서 뷰 구조가 불필요하게 복잡해짐<br>이로 인해 `ViewController` 내의 `setMoreButton, layoutMoreButton` 등 불필요한 메서드 분리 발생
+- **해결**: 더보기 버튼을 `summary` 영역과 동일하게 보고 `summaryVStackView` 내부에 배치함으로써 구조를 단순화함<br>버튼을 감싸는 `buttonContainer`를 만들어 스택뷰에 추가하고, 내부 버튼은 `SnapKit`으로 우측 정렬만 설정함<br>결과적으로 `setMoreButton, layoutMoreButton, updateMoreButton -> updateMoreButton` 메서드 개수를 줄였으며 코드길이 또한 51줄에서 23줄로 대폭 줄일 수 있었음
 
 ---
