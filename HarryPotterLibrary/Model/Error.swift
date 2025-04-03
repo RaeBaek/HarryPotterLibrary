@@ -15,3 +15,11 @@ enum DataError: String, Error {
 enum ButtonError: String {
     case findNotButton = "더 보기 버튼을 찾을 수 없습니다."
 }
+
+enum IndexError: String {
+    case outOfRange = "잘못된 인덱스입니다."
+}
+
+enum BookError: String {
+    case noInfoSummary = "책에 대한 요약 정보를 불러올 수 없습니다."
+}

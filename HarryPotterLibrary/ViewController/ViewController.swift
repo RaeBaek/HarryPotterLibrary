@@ -172,6 +172,12 @@ class ViewController: UIViewController {
     
     private func updatePageInfo(_ index: Int) {
         let libraryIndex = index - 1
+        
+        guard harryPoterLibrary.indices.contains(libraryIndex) else {
+            showAlert(IndexError.outOfRange.rawValue)
+            return
+        }
+        
         let currentBook = harryPoterLibrary[libraryIndex]
         
         updateBookInfoView(with: currentBook, index: index)
@@ -181,7 +187,7 @@ class ViewController: UIViewController {
     
     private func updateBookInfoView(with book: Book, index: Int) {
         titleLabel.text = book.title
-        coverImage.image = UIImage(named: "harrypotter\(index)") //Constants.Image.harrypotter1
+        coverImage.image = UIImage(named: "harrypotter\(index)") ?? UIImage(systemName: "book")
         bookTitleLabel.text = book.title
         
         authorNameLabel.text = book.author
@@ -196,10 +202,11 @@ class ViewController: UIViewController {
     
     private func updateMoreButton(for book: Book, index: Int) {
         // 기존 chaptersContentVStackView에 더보기 버튼이 있었다면 삭제
-        if moreButton != nil {
+        if let moreButton {
             summaryVStackView.removeArrangedSubview(buttonContainer)
+            moreButton.removeFromSuperview()
             buttonContainer.removeFromSuperview()
-            moreButton = nil
+            self.moreButton = nil
         }
         
         guard book.summary.count > Constants.Summary.maxLength else { return }
@@ -232,6 +239,8 @@ class ViewController: UIViewController {
     
     // 시리즈 버튼 설정
     private func setSeriesButton() {
+        guard !harryPoterLibrary.isEmpty else { return }
+        
         for i in 1...harryPoterLibrary.count {
             let seriesButton = makeSeriesButton(index: i)
             
@@ -315,8 +324,13 @@ class ViewController: UIViewController {
     // 더 보기, 접기 상황에 맞게 버튼 title과 summaryContentLabel text 수정
     @objc private func moreButtonTapped(_ sender: UIButton) {
         let index = sender.tag
-        let status = userDefaultsManager.getMoreButtonEnable(index)
         
+        guard harryPoterLibrary.indices.contains(index - 1) else {
+            showAlert(BookError.noInfoSummary.rawValue)
+            return
+        }
+        
+        let status = userDefaultsManager.getMoreButtonEnable(index)
         userDefaultsManager.setMoreButtonEnable(index, !status)
         
         let title = !status ? Constants.ButtonTitle.less : Constants.ButtonTitle.more
